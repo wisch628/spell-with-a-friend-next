@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <div className={styling.home}>
       <Header />
-      <div>
+      <div className={styling.center}>
         <Image
           src="/images/bee-clipart.png"
           alt="bee icon"

@@ -29,22 +29,57 @@ nav.top {
   z-index: 5;
 }
 
-
-
-/* :root {
-  --background: #ffffff;
-  --foreground: #171717;
+h1 {
+  font-weight: 400;
+  font-size: xx-large;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+h2 {
+  font-size: large;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-} */
+  text-align: center;
+  background-color: white;
+}
+
+h5 {
+  text-align: center;
+  font-size: 21px;
+}
+
+input {
+  outline: 0;
+  border-width: 0 0 .5px 0;
+  border-color: #e6e6e6;
+  font-size: 14px;
+  margin: 0px auto auto auto;
+  text-align: center;
+}
+
+nav.bottom {
+  bottom: 0;
+  background-color: #333;
+  color: white;
+  justify-content: flex-end;
+  height: 50px;
+  z-index: 1;
+}
+
+button {
+  font-size: 14px;
+}
+
+nav.bottom>button {
+  width: 400px;
+  right: 0;
+  border: 0;
+  background-color: #f7da22;
+  color: #333;
+  font-size: 20px;
+}
+
+
+nav.top button {
+  height: 30px;
+}
