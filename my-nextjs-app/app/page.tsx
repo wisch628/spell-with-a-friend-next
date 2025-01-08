@@ -11,24 +11,26 @@ export default function Home() {
       <Header />
       <div className={styling.center}>
         <Image
-          src="/images/bee-clipart.png"
+          src="/images/double-bee.png"
           alt="bee icon"
           width={100}
           height={100}
         />
         {/* {isLoggedIn ? ( */}
         <div>
-          <h1>{`Welcome, ${firstName}!`}</h1>
-          <h2>What would you like to do today?</h2>
-          <Link href="/new">
-            <button>Create a New Game</button>
-          </Link>
-          <Link href="/join">
-            <button>Join an Active Game</button>
-          </Link>
-          <Link href="/allgames">
-            <button>Load Your Active Games</button>
-          </Link>
+          <h1>{`Welcome, ${firstName}`}</h1>
+          <h2>It's time to start spelling with your friends!</h2>
+          <div>
+            <Link href="/new">
+              <button>Create a New Game</button>
+            </Link>
+            <Link href="/join">
+              <button>Join an Active Game</button>
+            </Link>
+            <Link href="/allgames">
+              <button>Load Your Active Games</button>
+            </Link>
+          </div>
         </div>
         {/* // ) : (
             // <Login />        
