@@ -9,7 +9,6 @@ const JoinGame = () => {
   const [gameLoaded, setGameLoaded] = useState(false);
   const getGame = () => {
     if (!gameLoaded) {
-      console.log("game not loaded");
       fetch("http://127.0.0.1:8000/getGame")
         // .then((response) => response.json())
         .then(() => {

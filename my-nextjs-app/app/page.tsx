@@ -27,9 +27,6 @@ export default function Home() {
               <Link href="/join">
                 <button>Join an Active Game</button>
               </Link>
-              {/* <Link href="/allgames">
-                <button>Load Your Active Games</button>
-              </Link> */}
             </div>
           </div>
         </div>
