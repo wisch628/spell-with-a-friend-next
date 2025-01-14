@@ -18,8 +18,8 @@ export default function Home() {
           />
           {/* {isLoggedIn ? ( */}
           <div>
-            <h1>{`Welcome, ${firstName}`}</h1>
-            <h2>It's time to start spelling with your friends!</h2>
+            <h1>Welcome to spell with a friend!</h1>
+            <h2>Click below to get started</h2>
             <div>
               <Link href="/new">
                 <button>Create a New Game</button>
@@ -27,9 +27,9 @@ export default function Home() {
               <Link href="/join">
                 <button>Join an Active Game</button>
               </Link>
-              <Link href="/allgames">
+              {/* <Link href="/allgames">
                 <button>Load Your Active Games</button>
-              </Link>
+              </Link> */}
             </div>
           </div>
         </div>

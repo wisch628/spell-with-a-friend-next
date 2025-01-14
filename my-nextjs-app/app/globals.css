@@ -102,6 +102,9 @@ nav.top button {
    width: 60px;
    height: 104px;
    background-color: #e6e6e6;
+      display: flex;
+        align-items: center;
+        justify-content: center;
  }
 
 

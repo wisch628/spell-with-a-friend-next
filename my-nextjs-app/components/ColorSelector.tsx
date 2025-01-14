@@ -4,7 +4,7 @@ const ColorSelector = () => {
   const [color, setColor] = useState("red");
   return (
     <div>
-      <label>Select your color</label>
+      <label>And select your color</label>
       <select
         name="color"
         onChange={(event) => setColor(event.target.value)}
