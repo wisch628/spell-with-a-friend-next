@@ -1,5 +1,9 @@
+"use client";
+
+import { Letters } from "./Letters";
+
 const Play = () => {
-  return <div>Lets Play</div>;
+  return <Letters />;
 };
 
 export default Play;

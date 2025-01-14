@@ -80,3 +80,57 @@ nav.bottom>button {
 nav.top button {
   height: 30px;
 }
+
+ .cell-bottom {
+   float: left;
+   border-left: 30px solid #e6e6e6;
+   border-top: 52px solid transparent;
+   border-bottom: 52px solid transparent;
+ }
+
+ .cell-top {
+   float: left;
+   border-right: 30px solid #e6e6e6;
+   border-top: 52px solid transparent;
+   border-bottom: 52px solid transparent;
+
+ }
+
+ .cell-center {
+   float: left;
+   width: 60px;
+   height: 104px;
+   background-color: #e6e6e6;
+ }
+
+
+ .hex {
+   float: left;
+   margin-right: -26px;
+   margin-bottom: -50px;
+ }
+
+ .hex.odd {
+   padding-top: 53px;
+ }
+
+ .game-wrapper {
+   width: 290px;
+   background-color: pink;
+ }
+
+ .center .cell-center {
+   background-color: #f7da22;
+ }
+
+ .center .cell-top {
+   border-right: 30px solid #f7da22;
+ }
+
+ .center .cell-bottom {
+   border-left: 30px solid #f7da22;
+ }
+
+ .special {
+   padding-left: 93.5px;
+ }
