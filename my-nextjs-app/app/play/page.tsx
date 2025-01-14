@@ -1,6 +1,6 @@
 "use client";
 
-import { KeyboardEventHandler, useEffect, useState } from "react";
+import { KeyboardEventHandler, useEffect, useRef, useState } from "react";
 import { Letters } from "./Letters";
 import { Loading } from "./Loading";
 import { WordContainer } from "./WordContainer";
@@ -14,6 +14,8 @@ const Play = () => {
     displayDate: "",
     displayWeekday: "",
   });
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
   useEffect(() => {
     // Call the Python endpoint
     fetch("http://127.0.0.1:8000/today")
@@ -24,9 +26,23 @@ const Play = () => {
       })
       .catch((error) => console.error("Error:", error));
   }, []);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+      console.log("does input ref exist");
+    }
+  }, [gameData]);
   const [loading, setLoading] = useState(true);
   const [currentWord, setCurrentWord] = useState("");
   const [score, setScore] = useState(0);
+
+  // Ensure the input is always focused when the component renders
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [currentWord]);
 
   const togglePopUp = () => {};
 
@@ -47,7 +63,7 @@ const Play = () => {
   } else {
     const style = { backgroundColor: "white" };
     return (
-      <div style={style}>
+      <div style={style} onKeyDown={() => inputRef?.current?.focus()}>
         {/* {this.state.popUp === "seen" && (
           <InvitePopUp togglePopUp={this.togglePopUp} />
         )} */}
@@ -71,6 +87,7 @@ const Play = () => {
           <WordContainer />
           <div className="left-container">
             <input
+              ref={inputRef}
               placeholder="Type Your Word"
               name="currentWord"
               id="wordField"
@@ -79,7 +96,12 @@ const Play = () => {
               onChange={typeWord}
               onKeyUp={checkWord}
             />
-            <Letters gameData={gameData} />
+            <Letters
+              gameData={gameData}
+              onClickLetter={(letter: string) =>
+                setCurrentWord(currentWord + letter)
+              }
+            />
           </div>
           {/* {this.state.popUp === "chat" && (
             <ChatBox togglePopUp={() => this.togglePopUp("chat")} />

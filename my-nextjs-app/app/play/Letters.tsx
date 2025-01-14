@@ -4,7 +4,13 @@ import React, { useEffect, useState } from "react";
 import { Hexagon } from "./Hexagon";
 import { GameData } from "./types";
 
-export const Letters = ({ gameData }: { gameData: GameData }) => {
+export const Letters = ({
+  gameData,
+  onClickLetter,
+}: {
+  gameData: GameData;
+  onClickLetter: (letter: string) => void;
+}) => {
   const [outside, setOutside] = useState<string[]>([]);
 
   useEffect(() => {
@@ -23,20 +29,45 @@ export const Letters = ({ gameData }: { gameData: GameData }) => {
       </button>
       <div className="game-container" onClick={letterClick}>
         <div className="game-wrapper">
-          <Hexagon letter={outside[0]} className={["hex", "odd"].join(" ")} />
-          <Hexagon letter={outside[1]} className="hex" />
-          <Hexagon letter={outside[2]} className={["hex", "odd"].join(" ")} />
+          <Hexagon
+            onClick={onClickLetter}
+            letter={outside[0]}
+            className={["hex", "odd"].join(" ")}
+          />
+          <Hexagon
+            onClick={onClickLetter}
+            letter={outside[1]}
+            className="hex"
+          />
+          <Hexagon
+            onClick={onClickLetter}
+            letter={outside[2]}
+            className={["hex", "odd"].join(" ")}
+          />
         </div>
         <div className="game-wrapper">
-          <Hexagon letter={outside[3]} className={["hex", "odd"].join(" ")} />
           <Hexagon
+            onClick={onClickLetter}
+            letter={outside[3]}
+            className={["hex", "odd"].join(" ")}
+          />
+          <Hexagon
+            onClick={onClickLetter}
             letter={gameData.centerLetter.toUpperCase()}
             className={["hex", "center"].join(" ")}
           />
-          <Hexagon letter={outside[4]} className={["hex", "odd"].join(" ")} />
+          <Hexagon
+            onClick={onClickLetter}
+            letter={outside[4]}
+            className={["hex", "odd"].join(" ")}
+          />
         </div>
         <div className={["game-wrapper", "special"].join(" ")}>
-          <Hexagon letter={outside[5]} className="hex" />
+          <Hexagon
+            onClick={onClickLetter}
+            letter={outside[5]}
+            className="hex"
+          />
         </div>
       </div>
     </div>
