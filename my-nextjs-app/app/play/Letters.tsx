@@ -2,32 +2,10 @@
 
 import React, { useEffect, useState } from "react";
 import { Hexagon } from "./Hexagon";
+import { GameData } from "./types";
 
-interface GameData {
-  answers?: string[];
-  centerLetter: string;
-  displayDate?: string;
-  displayWeekday?: string;
-  outerLetters: string[];
-  panagrams?: string[];
-  validLetters?: string[];
-}
-
-export const Letters = () => {
-  const [gameData, setGameData] = useState<GameData>({
-    outerLetters: [],
-    centerLetter: "",
-  });
+export const Letters = ({ gameData }: { gameData: GameData }) => {
   const [outside, setOutside] = useState<string[]>([]);
-  useEffect(() => {
-    // Call the Python endpoint
-    fetch("http://127.0.0.1:8000/today")
-      .then((response) => response.json())
-      .then((data) => {
-        setGameData(data);
-      })
-      .catch((error) => console.error("Error:", error));
-  }, []);
 
   useEffect(() => {
     setOutside(gameData.outerLetters.map((letter) => letter.toUpperCase()));

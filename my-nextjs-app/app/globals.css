@@ -134,3 +134,49 @@ nav.top button {
  .special {
    padding-left: 93.5px;
  }
+
+ nav.top {
+   justify-content: space-around;
+   background-color: #e6e6e6;
+   top: 0;
+   align-items: center;
+   height: 70px;
+   z-index: 5;
+ }
+
+ .right-container {
+   border-radius: 10px;
+   border: 1px solid #e6e6e6;
+   padding: 30px;
+   height: fit-content;
+
+ }
+
+ .flex {
+   display: flex;
+   flex-direction: row-reverse;
+   flex-wrap: wrap;
+   margin-top: 70px;
+   justify-content: space-evenly;
+   padding-top: 50px;
+ }
+
+ .Red {
+   color: red
+ }
+
+ .Orange {
+   color: orange
+ }
+
+ .Green {
+   color: green
+ }
+
+ .Blue {
+   color: blue
+ }
+
+ .Purple {
+   color: purple
+ }
