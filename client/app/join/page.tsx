@@ -10,7 +10,6 @@ const JoinGame = () => {
   const getGame = () => {
     if (!gameLoaded) {
       fetch("http://127.0.0.1:8000/getGame")
-        // .then((response) => response.json())
         .then(() => {
           setGameLoaded(true);
         })
@@ -23,13 +22,6 @@ const JoinGame = () => {
     <PageWrapper>
       {gameLoaded ? (
         <div>
-          <p>Enter your display name</p>
-          <input
-            placeholder="Display name"
-            type="text"
-            name="displayName"
-            defaultValue=""
-          />
           <ColorSelector />
           <Link href="play">
             <button>Start Playing</button>

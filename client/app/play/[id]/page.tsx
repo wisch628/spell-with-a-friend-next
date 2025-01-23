@@ -18,9 +18,10 @@ const Play = () => {
 
   useEffect(() => {
     // Call the Python endpoint
-    fetch("http://127.0.0.1:8000/today")
+    fetch("http://127.0.0.1:8000/todaysData")
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         setGameData(data);
         setLoading(false);
       })

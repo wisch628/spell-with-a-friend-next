@@ -1,7 +1,12 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 
-const ColorSelector = () => {
-  const [color, setColor] = useState("red");
+const ColorSelector = ({
+  color,
+  setColor,
+}: {
+  color: string;
+  setColor: Dispatch<SetStateAction<string>>;
+}) => {
   return (
     <div>
       <label>And select your color</label>
