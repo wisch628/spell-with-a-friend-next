@@ -15,11 +15,11 @@ const ColorSelector = ({
         onChange={(event) => setColor(event.target.value)}
         value={color}
       >
-        <option value="Red">Red</option>
-        <option value="Orange">Orange</option>
-        <option value="Green">Green</option>
-        <option value="Blue">Blue</option>
-        <option value="Purple">Purple</option>
+        <option value="red">Red</option>
+        <option value="orange">Orange</option>
+        <option value="green">Green</option>
+        <option value="blue">Blue</option>
+        <option value="purple">Purple</option>
       </select>
     </div>
   );

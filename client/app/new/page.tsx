@@ -24,7 +24,7 @@ const NewGame = () => {
       if (response.ok) {
         const data = await response.json();
         // Change the URL to the game page with the game code
-        router.push(`/play?game=${data.game.game_code}`);
+        router.push(`/play/${data.game.game_code}`);
       } else {
         const error = await response.json();
         //  setErrorMessage(error.error || "Failed to create the game");

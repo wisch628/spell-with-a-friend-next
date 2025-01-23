@@ -1,18 +1,22 @@
 import React from "react";
 
-interface WordObject {
+export interface WordObject {
   word: string;
-  userId: number;
+  color: string;
 }
 
-interface GameUsers {
+export interface GameUsers {
   color: string;
   id: number;
 }
 
-export const WordContainer = () => {
-  const correctWords: WordObject[] = [];
-  const gameUsers: GameUsers[] = [];
+export const WordContainer = ({
+  correctWords,
+  gameUsers,
+}: {
+  correctWords: WordObject[];
+  gameUsers: GameUsers[];
+}) => {
   return (
     <div className="right-container">
       <p>Your team has found {correctWords.length || 0} words</p>
@@ -22,10 +26,7 @@ export const WordContainer = () => {
               const capitalized =
                 wordObject.word.charAt(0).toUpperCase() +
                 wordObject.word.slice(1);
-              const user = gameUsers.filter(
-                (user) => user.id === wordObject.userId
-              )[0];
-              const color = user.color;
+              const color = wordObject.color;
               return (
                 <p
                   className={["correct", color].join(" ")}

@@ -3,9 +3,10 @@
 import { KeyboardEventHandler, useEffect, useRef, useState } from "react";
 import { Letters } from "./Letters";
 import { Loading } from "./Loading";
-import { WordContainer } from "./WordContainer";
+import { GameUsers, WordContainer, WordObject } from "./WordContainer";
 import { GameData } from "./types";
 import { GameTopNav } from "./GameTopNav";
+import { useParams } from "next/navigation";
 
 const Play = () => {
   const [gameData, setGameData] = useState<GameData>({
@@ -14,7 +15,21 @@ const Play = () => {
     displayDate: "",
     displayWeekday: "",
   });
+  const [users, setUsers] = useState<GameUsers[]>([]);
+  const [words, setWords] = useState<WordObject[]>([]);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const { id } = useParams();
+  useEffect(() => {
+    // Call the Python endpoint
+    fetch(`http://127.0.0.1:8000/game/${id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setWords(data.words);
+        setUsers(data.users);
+      })
+      .catch((error) => console.error("Error:", error));
+  }, []);
 
   useEffect(() => {
     // Call the Python endpoint
@@ -52,9 +67,24 @@ const Play = () => {
     setCurrentWord(e?.target?.value);
   };
 
-  const checkWord: KeyboardEventHandler<HTMLInputElement> = (e) => {
+  const checkWord: KeyboardEventHandler<HTMLInputElement> = async (e) => {
     if (e.key === "Enter") {
       const newWord = currentWord.toLowerCase();
+      const response = await fetch(`http://localhost:8000/words/${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          color: "blue",
+          word: newWord,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(words);
+          setWords(data.words);
+        });
       setCurrentWord("");
     }
   };
@@ -85,7 +115,7 @@ const Play = () => {
           <TeamPopUp togglePopUp={this.togglePopUp} />
         )} */}
         <div className="flex">
-          <WordContainer />
+          <WordContainer correctWords={words} gameUsers={users} />
           <div className="left-container">
             <input
               ref={inputRef}

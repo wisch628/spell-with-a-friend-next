@@ -86,3 +86,41 @@ exports.createNewGame = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+exports.getGame = async (req, res) => {
+  const game_code = req.params.id
+  console.log("params", req.params)
+
+  try {
+
+    // Begin transaction
+    await client.query('BEGIN');
+
+    // Insert the new game into the games table
+    const selectGameUsers = `
+      SELECT color, display_name
+      FROM game_users
+      WHERE game_code = $1
+    `;
+    const selectGameWords = `
+      SELECT color, word, points
+      FROM words
+      WHERE game_code = $1
+    `;
+  
+    const users = await client.query(selectGameUsers, [game_code]);
+    const words = await client.query(selectGameWords, [game_code]);
+
+    // Respond with the new game details
+    res.status(200).json({
+      message: 'Game created successfully',
+      users: users.rows,
+      words:  words.rows,
+    });
+  } catch (error) {
+    // Rollback in case of error
+    await client.query('ROLLBACK');
+    console.error('Error creating game:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};

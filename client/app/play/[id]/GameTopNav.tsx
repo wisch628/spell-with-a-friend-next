@@ -26,7 +26,7 @@ export const GameTopNav = ({
       </h3>
       <h3>Player: {user.firstName}</h3>
       <h3>
-        Color: <span className="Blue">Blue</span>
+        Color: <span className="blue">Blue</span>
       </h3>
 
       <button onClick={() => {}}>Invite Friends</button>
