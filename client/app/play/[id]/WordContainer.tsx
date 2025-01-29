@@ -5,18 +5,17 @@ export interface WordObject {
   color: string;
 }
 
-export interface GameUsers {
+export interface GameUser {
   color: string;
-  id: number;
+  display_name: string;
 }
 
 export const WordContainer = ({
   correctWords,
-  gameUsers,
 }: {
   correctWords: WordObject[];
-  gameUsers: GameUsers[];
 }) => {
+  console.log({ correctWords });
   return (
     <div className="right-container">
       <p>Your team has found {correctWords.length || 0} words</p>

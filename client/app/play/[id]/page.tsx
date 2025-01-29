@@ -3,7 +3,7 @@
 import { KeyboardEventHandler, useEffect, useRef, useState } from "react";
 import { Letters } from "./Letters";
 import { Loading } from "./Loading";
-import { GameUsers, WordContainer, WordObject } from "./WordContainer";
+import { GameUser, WordContainer, WordObject } from "./WordContainer";
 import { GameData } from "./types";
 import { GameTopNav } from "./GameTopNav";
 import { useParams } from "next/navigation";
@@ -15,13 +15,14 @@ const Play = () => {
     displayDate: "",
     displayWeekday: "",
   });
-  const [users, setUsers] = useState<GameUsers[]>([]);
+  const [users, setUsers] = useState<GameUser[]>([]);
   const [words, setWords] = useState<WordObject[]>([]);
+  const [player, setPlayer] = useState<GameUser | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const { id } = useParams();
+  const { id: gameId } = useParams();
   useEffect(() => {
     // Call the Python endpoint
-    fetch(`http://127.0.0.1:8000/game/${id}`)
+    fetch(`http://127.0.0.1:8000/game/${gameId}`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -29,7 +30,17 @@ const Play = () => {
         setUsers(data.users);
       })
       .catch((error) => console.error("Error:", error));
-  }, []);
+  }, [gameId]);
+
+  useEffect(() => {
+    if (!users) return;
+    const savedName = localStorage.getItem(gameId as string);
+    const savedPlayer = users.find(
+      ({ display_name }) => display_name === savedName
+    );
+    setPlayer(savedPlayer);
+    console.log(savedPlayer);
+  }, [users, gameId]);
 
   useEffect(() => {
     // Call the Python endpoint
@@ -70,13 +81,13 @@ const Play = () => {
   const checkWord: KeyboardEventHandler<HTMLInputElement> = async (e) => {
     if (e.key === "Enter") {
       const newWord = currentWord.toLowerCase();
-      const response = await fetch(`http://localhost:8000/words/${id}`, {
+      const response = await fetch(`http://localhost:8000/words/${gameId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          color: "blue",
+          color: player?.color,
           word: newWord,
         }),
       })
@@ -107,6 +118,7 @@ const Play = () => {
         <GameTopNav
           displayDate={gameData.displayDate}
           displayWeekday={gameData.displayWeekday}
+          user={player as GameUser}
         />
         <nav className="bottom">
           {/* <button onClick={() => this.togglePopUp("chat")}>Chat Box</button> */}

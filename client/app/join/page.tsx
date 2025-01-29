@@ -1,16 +1,31 @@
 "use client";
 
-import ColorSelector from "@/components/ColorSelector";
 import { PageWrapper } from "@/components/PageWrapper";
-import Link from "next/link";
+import { UserDetailsBody } from "@/components/types";
+import UserDetailsForm from "@/components/UserDetailsForm";
 import { useState } from "react";
+import { callApiRoute } from "../utils";
+import { useRouter } from "next/navigation";
+import { defaultColors } from "@/components/constants";
 
 const JoinGame = () => {
   const [gameLoaded, setGameLoaded] = useState(false);
+  const [gameCode, setGameCode] = useState("");
+  const [availableColors, setAvailableColors] = useState<string[]>([]);
+  const router = useRouter();
+
   const getGame = () => {
     if (!gameLoaded) {
-      fetch("http://127.0.0.1:8000/getGame")
-        .then(() => {
+      fetch(`http://127.0.0.1:8000/game/${gameCode}`)
+        .then((response) => response.json())
+        .then((response) => {
+          console.log({ response });
+          const usedColors = response.users.map(
+            ({ color }: { color: string }) => color
+          );
+          setAvailableColors(
+            defaultColors.filter((color) => usedColors.indexOf(color) === -1)
+          );
           setGameLoaded(true);
         })
         .catch((error) => console.error("Error:", error));
@@ -18,15 +33,37 @@ const JoinGame = () => {
       console.log("next call");
     }
   };
+
+  const goToGame = async ({ displayName, color }: UserDetailsBody) => {
+    try {
+      const response = await callApiRoute(`game/${gameCode}/user`, {
+        display_name: displayName,
+        color,
+      });
+      const json = response.json();
+      debugger;
+      if (response.ok) {
+        console.log(json, gameCode);
+        // Change the URL to the game page with the game code
+        localStorage.setItem(gameCode, displayName);
+        router.push(`/play/${gameCode}`);
+      } else {
+        const error = await response.json();
+        //  setErrorMessage(error.error || "Failed to create the game");
+      }
+    } catch (error) {
+      console.error("Error creating game:", error);
+      //  setErrorMessage("Something went wrong");
+    }
+  };
   return (
     <PageWrapper>
       {gameLoaded ? (
-        <div>
-          <ColorSelector />
-          <Link href="play">
-            <button>Start Playing</button>
-          </Link>
-        </div>
+        <UserDetailsForm
+          newGame={false}
+          onClick={goToGame}
+          colors={availableColors}
+        />
       ) : (
         <div>
           {" "}
@@ -35,7 +72,8 @@ const JoinGame = () => {
             placeholder="Game Code"
             type="text"
             name="gameCode"
-            defaultValue=""
+            value={gameCode}
+            onChange={(e) => setGameCode(e.target.value)}
           />
           <button onClick={getGame}>Join Game</button>
         </div>

@@ -1,11 +1,15 @@
 import { Dispatch, SetStateAction } from "react";
+import { colors } from "./constants";
+import { captialize } from "@/app/utils";
 
 const ColorSelector = ({
   color,
   setColor,
+  colors,
 }: {
   color: string;
   setColor: Dispatch<SetStateAction<string>>;
+  colors: string[];
 }) => {
   return (
     <div>
@@ -15,11 +19,11 @@ const ColorSelector = ({
         onChange={(event) => setColor(event.target.value)}
         value={color}
       >
-        <option value="red">Red</option>
-        <option value="orange">Orange</option>
-        <option value="green">Green</option>
-        <option value="blue">Blue</option>
-        <option value="purple">Purple</option>
+        {colors.map((color) => (
+          <option value={color} key={color}>
+            {captialize(color)}
+          </option>
+        ))}
       </select>
     </div>
   );

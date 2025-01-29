@@ -6,6 +6,7 @@ const wordsController = require('./controllers/wordsController');
 
 
 // Game Routes
+router.post('/game/:id/user', gameController.createNewUser);     // Create new game
 router.post('/game', gameController.createNewGame);     // Create new game
 router.get('/todaysData', gameController.getTodaysData); // Get data
 router.get('/game/:id', gameController.getGame); // Get game

@@ -1,0 +1,1 @@
+export const defaultColors = ['Red', 'Orange', 'Green', 'Blue','Purple']

@@ -1,6 +1,17 @@
 const puppeteer = require('puppeteer');
 const client = require('../db');
 
+const addUser = async (display_name, color, game_code) => {
+ const insertUserGameQuery = `
+      INSERT INTO game_users (game_code, display_name, color)
+      VALUES ($1, $2, $3)
+    `;
+    await client.query(insertUserGameQuery, [game_code, display_name, color]);
+
+    // Commit the transaction
+    await client.query('COMMIT');
+}
+
 exports.getTodaysData = async (_, res) => {
   try {
     // Launch the browser
@@ -64,15 +75,7 @@ exports.createNewGame = async (req, res) => {
     `;
     await client.query(insertGameQuery, [game_code]);
 
-    // Insert the user into the user_games table
-    const insertUserGameQuery = `
-      INSERT INTO game_users (game_code, display_name, color)
-      VALUES ($1, $2, $3)
-    `;
-    await client.query(insertUserGameQuery, [game_code, display_name, color]);
-
-    // Commit the transaction
-    await client.query('COMMIT');
+    await addUser(display_name, color, game_code)
 
     // Respond with the new game details
     res.status(201).json({
@@ -89,7 +92,6 @@ exports.createNewGame = async (req, res) => {
 
 exports.getGame = async (req, res) => {
   const game_code = req.params.id
-  console.log("params", req.params)
 
   try {
 
@@ -121,6 +123,34 @@ exports.getGame = async (req, res) => {
     // Rollback in case of error
     await client.query('ROLLBACK');
     console.error('Error creating game:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+exports.createNewUser = async (req, res) => {
+  console.log('creating a new user')
+  const game_code = req.params.id
+  const { color, display_name } = req.body;
+
+  if (!display_name || !color || !game_code) {
+    console.log('no display name')
+    return res.status(400).json({ error: 'display_name, color, and game_code are required' });
+  }
+
+  try {
+
+   await addUser(display_name, color, game_code)
+   console.log('user added')
+    // Respond with the new game details
+    await res.status(201).json({
+      message: 'User created successfully',
+      game: { game_code, created_at: new Date(), display_name, color },
+    });
+
+  } catch (error) {
+    // Rollback in case of error
+    await client.query('ROLLBACK');
+    console.error('Error creating user:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };

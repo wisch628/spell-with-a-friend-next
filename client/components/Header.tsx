@@ -14,11 +14,6 @@ export const Header = () => {
           height={100}
         />
       </div>
-      {/* {props.user.id && (
-        <Link to="/" onClick={props.logOut}>
-          Logout
-        </Link>
-      )} */}
     </nav>
   );
 };

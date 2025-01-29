@@ -1,17 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { GameUser } from "./WordContainer";
 
 export const GameTopNav = ({
   displayWeekday,
   displayDate,
+  user,
 }: {
   displayWeekday: string;
   displayDate: string;
+  user: GameUser;
 }) => {
-  const user = {
-    firstName: "Hannah",
-  };
   return (
     <nav className="top">
       <Image
@@ -24,18 +24,15 @@ export const GameTopNav = ({
       <h3>
         {displayWeekday} {displayDate}
       </h3>
-      <h3>Player: {user.firstName}</h3>
       <h3>
-        Color: <span className="blue">Blue</span>
+        Player: <span className={user.color}>{user.display_name}</span>
       </h3>
 
       <button onClick={() => {}}>Invite Friends</button>
-      <Link href={`/allgames`}>
-        <button>Load other games</button>{" "}
-      </Link>
+
       <button onClick={() => {}}>Your Team</button>
       <Link href="/">
-        <button onClick={() => {}}>Logout</button>
+        <button onClick={() => {}}>Exit Game</button>
       </Link>
     </nav>
   );
