@@ -165,6 +165,11 @@ nav.top button {
    padding-top: 50px;
  }
 
+    .score {
+      display: flex;
+      justify-content: space-evenly;
+    }
+
  .Red {
    color: red
  }

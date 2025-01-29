@@ -3,6 +3,7 @@ import React from "react";
 export interface WordObject {
   word: string;
   color: string;
+  points: number;
 }
 
 export interface GameUser {
@@ -18,7 +19,7 @@ export const WordContainer = ({
   console.log({ correctWords });
   return (
     <div className="right-container">
-      <p>Your team has found {correctWords.length || 0} words</p>
+      <p>Your team has found {correctWords?.length || 0} words</p>
       <div className="word-container">
         {correctWords.length > 0
           ? correctWords.map((wordObject) => {

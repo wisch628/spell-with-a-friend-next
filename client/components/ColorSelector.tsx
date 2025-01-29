@@ -1,5 +1,4 @@
 import { Dispatch, SetStateAction } from "react";
-import { colors } from "./constants";
 import { captialize } from "@/app/utils";
 
 const ColorSelector = ({

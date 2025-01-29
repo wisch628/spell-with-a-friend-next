@@ -1,12 +1,19 @@
 "use client";
 
-import { KeyboardEventHandler, useEffect, useRef, useState } from "react";
+import {
+  KeyboardEventHandler,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Letters } from "./Letters";
 import { Loading } from "./Loading";
 import { GameUser, WordContainer, WordObject } from "./WordContainer";
 import { GameData } from "./types";
 import { GameTopNav } from "./GameTopNav";
 import { useParams } from "next/navigation";
+import { captialize } from "@/app/utils";
 
 const Play = () => {
   const [gameData, setGameData] = useState<GameData>({
@@ -20,6 +27,39 @@ const Play = () => {
   const [player, setPlayer] = useState<GameUser | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { id: gameId } = useParams();
+
+  const mappedUsers = useMemo(() => {
+    return users.reduce((acc, users) => {
+      acc[users.color] = 0;
+      return acc;
+    }, {} as { [key: string]: number });
+  }, [users]);
+
+  useEffect(() => {
+    const socket = new WebSocket(`ws://localhost:8000/words/${gameId}`);
+
+    socket.onopen = () => {
+      console.log("WebSocket connection established");
+    };
+
+    socket.onmessage = (event) => {
+      const json = JSON.parse(event.data);
+      console.log({ json });
+      if (json.type === "new_word") {
+        console.log("new word", json);
+        setWords(json.words);
+      }
+    };
+
+    socket.onerror = (error) => {
+      console.error("WebSocket error: ", error);
+    };
+
+    // Cleanup on component unmount
+    return () => {
+      socket.close();
+    };
+  }, [gameId]);
   useEffect(() => {
     // Call the Python endpoint
     fetch(`http://127.0.0.1:8000/game/${gameId}`)
@@ -33,11 +73,11 @@ const Play = () => {
   }, [gameId]);
 
   useEffect(() => {
-    if (!users) return;
+    if (!users.length) return;
     const savedName = localStorage.getItem(gameId as string);
     const savedPlayer = users.find(
       ({ display_name }) => display_name === savedName
-    );
+    ) as GameUser;
     setPlayer(savedPlayer);
     console.log(savedPlayer);
   }, [users, gameId]);
@@ -62,8 +102,20 @@ const Play = () => {
   }, [gameData]);
   const [loading, setLoading] = useState(true);
   const [currentWord, setCurrentWord] = useState("");
-  const [score, setScore] = useState(0);
 
+  const score = useMemo(() => {
+    const scores: { [key: string]: number } = {
+      total: 0,
+      ...mappedUsers,
+    };
+    words.forEach((word) => {
+      scores.total += word.points;
+      scores[word.color] += word.points;
+    });
+
+    return scores;
+  }, [words, mappedUsers]);
+  console.log({ score });
   // Ensure the input is always focused when the component renders
   useEffect(() => {
     if (inputRef.current) {
@@ -81,7 +133,7 @@ const Play = () => {
   const checkWord: KeyboardEventHandler<HTMLInputElement> = async (e) => {
     if (e.key === "Enter") {
       const newWord = currentWord.toLowerCase();
-      const response = await fetch(`http://localhost:8000/words/${gameId}`, {
+      await fetch(`http://localhost:8000/words/${gameId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -127,7 +179,18 @@ const Play = () => {
           <TeamPopUp togglePopUp={this.togglePopUp} />
         )} */}
         <div className="flex">
-          <WordContainer correctWords={words} gameUsers={users} />
+          <div>
+            <div className="score">
+              {Object.keys(score).map((color) => {
+                return (
+                  <p className={["correct", color].join(" ")} key={color}>
+                    {`${captialize(color)}: ${score[color]}`}
+                  </p>
+                );
+              })}
+            </div>
+            <WordContainer correctWords={words} />
+          </div>
           <div className="left-container">
             <input
               ref={inputRef}
