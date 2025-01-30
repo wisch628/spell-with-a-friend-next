@@ -19,7 +19,6 @@ const JoinGame = () => {
       fetch(`http://127.0.0.1:8000/game/${gameCode}`)
         .then((response) => response.json())
         .then((response) => {
-          console.log({ response });
           const usedColors = response.users.map(
             ({ color }: { color: string }) => color
           );
@@ -29,8 +28,6 @@ const JoinGame = () => {
           setGameLoaded(true);
         })
         .catch((error) => console.error("Error:", error));
-    } else {
-      console.log("next call");
     }
   };
 
@@ -40,10 +37,7 @@ const JoinGame = () => {
         display_name: displayName,
         color,
       });
-      const json = response.json();
-      debugger;
       if (response.ok) {
-        console.log(json, gameCode);
         // Change the URL to the game page with the game code
         localStorage.setItem(gameCode, displayName);
         router.push(`/play/${gameCode}`);

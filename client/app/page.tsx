@@ -4,8 +4,6 @@ import styling from "@/components/home.module.css";
 import { PageWrapper } from "@/components/PageWrapper";
 
 export default function Home() {
-  const isLoggedIn = true;
-  const firstName = "Hannah";
   return (
     <PageWrapper>
       <div>
@@ -30,9 +28,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-        {/* // ) : (
-            // <Login />        
-            // ) */}
       </div>
     </PageWrapper>
   );

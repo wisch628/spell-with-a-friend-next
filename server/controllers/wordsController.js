@@ -2,17 +2,20 @@ const client = require('../db');
 const WebSocket = require('ws');  // Add this line
 
 
-const calculatePoints = (word) => {
+const calculatePoints = (word, isPangram) => {
       if (word.length === 4) {
         return 1;
-      } else {
-        return word.length;
       }
+      points = word.length;
+      if (isPangram) {
+        return points + 7;
+      }
+      return points;
 }
 
 exports.addWord = async (req, res) => {
     const game_code = req.params.id
-  const { word, color } = req.body;
+  const { word, color, isPangram } = req.body;
 
   if (!word || !color || !game_code) {
     return res.status(400).json({ error: 'missing required values' });
@@ -34,7 +37,7 @@ exports.addWord = async (req, res) => {
     if (wordExists.rows.length > 0) {
       throw Error('That word already exists')
     }
-    const points = calculatePoints(word);
+    const points = calculatePoints(word, isPangram);
 
     const insertWordQuery = `
       INSERT INTO words (game_code, color, word, points)

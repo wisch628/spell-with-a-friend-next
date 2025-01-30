@@ -128,19 +128,16 @@ exports.getGame = async (req, res) => {
 };
 
 exports.createNewUser = async (req, res) => {
-  console.log('creating a new user')
   const game_code = req.params.id
   const { color, display_name } = req.body;
 
   if (!display_name || !color || !game_code) {
-    console.log('no display name')
     return res.status(400).json({ error: 'display_name, color, and game_code are required' });
   }
 
   try {
 
    await addUser(display_name, color, game_code)
-   console.log('user added')
     // Respond with the new game details
     await res.status(201).json({
       message: 'User created successfully',

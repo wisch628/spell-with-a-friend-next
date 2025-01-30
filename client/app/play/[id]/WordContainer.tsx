@@ -16,7 +16,6 @@ export const WordContainer = ({
 }: {
   correctWords: WordObject[];
 }) => {
-  console.log({ correctWords });
   return (
     <div className="right-container">
       <p>Your team has found {correctWords?.length || 0} words</p>

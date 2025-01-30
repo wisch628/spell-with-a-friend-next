@@ -14,6 +14,8 @@ import { GameData } from "./types";
 import { GameTopNav } from "./GameTopNav";
 import { useParams } from "next/navigation";
 import { captialize } from "@/app/utils";
+import { pangramCheck, wordErrorCheck } from "./utils";
+import { ToastContainer, toast } from "react-toastify";
 
 const Play = () => {
   const [gameData, setGameData] = useState<GameData>({
@@ -21,9 +23,11 @@ const Play = () => {
     centerLetter: "",
     displayDate: "",
     displayWeekday: "",
+    answers: [],
+    pangrams: [],
   });
   const [users, setUsers] = useState<GameUser[]>([]);
-  const [words, setWords] = useState<WordObject[]>([]);
+  const [foundWords, setFoundWords] = useState<WordObject[]>([]);
   const [player, setPlayer] = useState<GameUser | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { id: gameId } = useParams();
@@ -44,10 +48,8 @@ const Play = () => {
 
     socket.onmessage = (event) => {
       const json = JSON.parse(event.data);
-      console.log({ json });
       if (json.type === "new_word") {
-        console.log("new word", json);
-        setWords(json.words);
+        setFoundWords(json.words);
       }
     };
 
@@ -65,8 +67,7 @@ const Play = () => {
     fetch(`http://127.0.0.1:8000/game/${gameId}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-        setWords(data.words);
+        setFoundWords(data.words);
         setUsers(data.users);
       })
       .catch((error) => console.error("Error:", error));
@@ -79,7 +80,6 @@ const Play = () => {
       ({ display_name }) => display_name === savedName
     ) as GameUser;
     setPlayer(savedPlayer);
-    console.log(savedPlayer);
   }, [users, gameId]);
 
   useEffect(() => {
@@ -87,7 +87,6 @@ const Play = () => {
     fetch("http://127.0.0.1:8000/todaysData")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setGameData(data);
         setLoading(false);
       })
@@ -97,7 +96,6 @@ const Play = () => {
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
-      console.log("does input ref exist");
     }
   }, [gameData]);
   const [loading, setLoading] = useState(true);
@@ -108,14 +106,13 @@ const Play = () => {
       total: 0,
       ...mappedUsers,
     };
-    words.forEach((word) => {
+    foundWords.forEach((word) => {
       scores.total += word.points;
       scores[word.color] += word.points;
     });
 
     return scores;
-  }, [words, mappedUsers]);
-  console.log({ score });
+  }, [foundWords, mappedUsers]);
   // Ensure the input is always focused when the component renders
   useEffect(() => {
     if (inputRef.current) {
@@ -132,7 +129,24 @@ const Play = () => {
 
   const checkWord: KeyboardEventHandler<HTMLInputElement> = async (e) => {
     if (e.key === "Enter") {
+      const { centerLetter, outerLetters, pangrams, answers } = gameData;
       const newWord = currentWord.toLowerCase();
+      const errorMessage = wordErrorCheck({
+        newWord,
+        foundWords,
+        centerLetter,
+        outerLetters,
+        answers,
+      });
+      if (errorMessage) {
+        toast.error(errorMessage);
+        setCurrentWord("");
+        return;
+      }
+      const isPangram = pangramCheck({ newWord, pangrams });
+      if (isPangram) {
+        toast.info("Pangram!");
+      }
       await fetch(`http://localhost:8000/words/${gameId}`, {
         method: "POST",
         headers: {
@@ -141,12 +155,12 @@ const Play = () => {
         body: JSON.stringify({
           color: player?.color,
           word: newWord,
+          isPangram,
         }),
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log(words);
-          setWords(data.words);
+          setFoundWords(data.words);
         });
       setCurrentWord("");
     }
@@ -158,6 +172,7 @@ const Play = () => {
     const style = { backgroundColor: "white" };
     return (
       <div style={style} onKeyDown={() => inputRef?.current?.focus()}>
+        <ToastContainer />
         {/* {this.state.popUp === "seen" && (
           <InvitePopUp togglePopUp={this.togglePopUp} />
         )} */}
@@ -189,7 +204,7 @@ const Play = () => {
                 );
               })}
             </div>
-            <WordContainer correctWords={words} />
+            <WordContainer correctWords={foundWords} />
           </div>
           <div className="left-container">
             <input
