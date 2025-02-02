@@ -14,25 +14,27 @@ import { GameData } from "./types";
 import { GameTopNav } from "./GameTopNav";
 import { useParams } from "next/navigation";
 import { captialize } from "@/app/utils";
-import { pangramCheck, wordErrorCheck } from "./utils";
+import {
+  calculateScores,
+  pangramCheck,
+  setupSockets,
+  wordErrorCheck,
+} from "./utils";
 import { ToastContainer, toast } from "react-toastify";
+import { ChatBox } from "@/components/ChatBox";
+import { EMPTY_GAME_DATA } from "./consts";
 
 const Play = () => {
-  const [gameData, setGameData] = useState<GameData>({
-    outerLetters: [],
-    centerLetter: "",
-    displayDate: "",
-    displayWeekday: "",
-    answers: [],
-    pangrams: [],
-  });
+  const [gameData, setGameData] = useState<GameData>(EMPTY_GAME_DATA);
   const [users, setUsers] = useState<GameUser[]>([]);
   const [foundWords, setFoundWords] = useState<WordObject[]>([]);
   const [player, setPlayer] = useState<GameUser | null>(null);
+  const [popup, setPopup] = useState<"chat" | "">("");
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const { id: gameId } = useParams();
+  const params = useParams();
+  const gameId = params.id as string;
 
-  const mappedUsers = useMemo(() => {
+  const mappedUserScores = useMemo(() => {
     return users.reduce((acc, users) => {
       acc[users.color] = 0;
       return acc;
@@ -40,27 +42,7 @@ const Play = () => {
   }, [users]);
 
   useEffect(() => {
-    const socket = new WebSocket(`ws://localhost:8000/words/${gameId}`);
-
-    socket.onopen = () => {
-      console.log("WebSocket connection established");
-    };
-
-    socket.onmessage = (event) => {
-      const json = JSON.parse(event.data);
-      if (json.type === "new_word") {
-        setFoundWords(json.words);
-      }
-    };
-
-    socket.onerror = (error) => {
-      console.error("WebSocket error: ", error);
-    };
-
-    // Cleanup on component unmount
-    return () => {
-      socket.close();
-    };
+    setupSockets(gameId, setFoundWords);
   }, [gameId]);
   useEffect(() => {
     // Call the Python endpoint
@@ -87,7 +69,6 @@ const Play = () => {
     fetch("http://127.0.0.1:8000/todaysData")
       .then((response) => response.json())
       .then((data) => {
-        console.log({ data });
         setGameData(data);
       })
       .catch((error) => console.error("Error:", error));
@@ -108,25 +89,14 @@ const Play = () => {
   const [currentWord, setCurrentWord] = useState("");
 
   const score = useMemo(() => {
-    const scores: { [key: string]: number } = {
-      total: 0,
-      ...mappedUsers,
-    };
-    foundWords.forEach((word) => {
-      scores.total += word.points;
-      scores[word.color] += word.points;
-    });
-
-    return scores;
-  }, [foundWords, mappedUsers]);
+    return calculateScores(foundWords, mappedUserScores);
+  }, [foundWords, mappedUserScores]);
   // Ensure the input is always focused when the component renders
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
   }, [currentWord]);
-
-  const togglePopUp = () => {};
 
   const typeWord: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     e.preventDefault();
@@ -172,12 +142,26 @@ const Play = () => {
     }
   };
 
+  const togglePopUp = () => {
+    if (popup === "chat") {
+      setPopup("");
+    } else {
+      setPopup("chat");
+    }
+  };
+
+  const typeWords = () => {
+    if (popup !== "chat") {
+      inputRef?.current?.focus();
+    }
+  };
+
   if (loading === true) {
     return <Loading />;
   } else {
     const style = { backgroundColor: "white" };
     return (
-      <div style={style} onKeyDown={() => inputRef?.current?.focus()}>
+      <div style={style} onKeyDown={typeWords}>
         <ToastContainer />
         {/* {this.state.popUp === "seen" && (
           <InvitePopUp togglePopUp={this.togglePopUp} />
@@ -194,7 +178,7 @@ const Play = () => {
           user={player as GameUser}
         />
         <nav className="bottom">
-          {/* <button onClick={() => this.togglePopUp("chat")}>Chat Box</button> */}
+          <button onClick={togglePopUp}>Chat Box</button>
         </nav>
         {/* {this.state.popUp === "team" && (
           <TeamPopUp togglePopUp={this.togglePopUp} />
@@ -230,9 +214,9 @@ const Play = () => {
               }
             />
           </div>
-          {/* {this.state.popUp === "chat" && (
-            <ChatBox togglePopUp={() => this.togglePopUp("chat")} />
-          )} */}
+          {popup === "chat" && (
+            <ChatBox users={users} currentPlayer={player as GameUser} />
+          )}
         </div>
       </div>
     );

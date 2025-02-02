@@ -189,3 +189,93 @@ nav.top button {
  .Purple {
    color: purple
  }
+
+ .messageContainer {
+   width: 400px;
+   border: .5px solid black;
+   min-height: 200px;
+   bottom: 0;
+   position: fixed;
+   right: 0;
+   margin-bottom: 50px;
+   background-color: white;
+   z-index: 1;
+   max-height: 400px;
+   overflow: auto;
+ }
+
+ .innerMessages {
+   margin-bottom: 50px;
+   max-height: 400px;
+   overflow: scroll;
+ }
+
+ .message {
+   color: grey;
+   text-align: left;
+   width: 200px;
+   margin: auto 20px;
+ }
+
+ .message>p {
+   background-color: rgb(34, 34, 58);
+   color: white;
+   border-radius: 50px;
+   padding: 10px;
+   max-width: 200px;
+ }
+
+ .my-message {
+   color: grey;
+   text-align: right;
+   width: 300px;
+   margin-left: 80px;
+ }
+
+ .my-message>p {
+   color: white;
+   border-radius: 50px;
+   padding: 10px;
+   max-width: 200px;
+   margin-left: 120px;
+   width: auto;
+   text-align: left;
+ }
+
+ #new-message-form {
+   width: 400px;
+   font-size: 24px;
+   outline: .5px;
+   border-top: .5px solid black;
+   padding: 10px 20px 5px 20px;
+   z-index: 2;
+   position: fixed;
+   bottom: 0;
+   margin-bottom: 50px;
+   background-color: white;
+ }
+
+ #new-message-form>input {
+   font-size: 24px;
+   border-width: 0;
+ }
+
+ .Red.message>p {
+   background-color: red
+ }
+
+ .Orange.message>p {
+   background-color: orange
+ }
+
+ .Green.message>p {
+   background-color: green
+ }
+
+ .Blue.message>p {
+   background-color: blue
+ }
+
+ .Purple.message>p {
+   background-color: purple
+ }
