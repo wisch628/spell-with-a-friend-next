@@ -12,9 +12,29 @@ const addUser = async (display_name, color, game_code) => {
     await client.query('COMMIT');
 }
 
+const getRelevantDate = () => {
+  const today = new Date()
+  const cutoffTime = new Date(today);
+  cutoffTime.setUTCHours(8, 0, 0, 0); // Set to 08:00:00 UTC
+
+  if (today < cutoffTime) {
+    // If before 8 AM UTC, return the previous day
+    today.setUTCDate(today.getUTCDate() - 1);
+  }
+
+  return today.toISOString().split("T")[0]; // Return YYYY-MM-DD format
+};
+
+let cachedDailyData = {}; 
+
 exports.getTodaysData = async (_, res) => {
   try {
-    // Launch the browser
+    const today = getRelevantDate()
+    if (cachedDailyData[today]) {
+      res.json(cachedDailyData[today])
+      return
+    }
+       // Launch the browser
     const browser = await puppeteer.launch({
       headless: true, // Set to 'false' to see the browser window
     });
@@ -31,12 +51,13 @@ exports.getTodaysData = async (_, res) => {
       // Replace this with the actual JavaScript you're scraping
       return JSON.stringify(window.gameData.today);
     });
-
+    const parsed = JSON.parse(dataToday)
     // Close the browser
     await browser.close();
+    cachedDailyData = {[today]: parsed}
 
     // Send the scraped data as a response
-    res.json(JSON.parse(dataToday));
+    res.json(parsed);
   } catch (error) {
     console.error("Error fetching NYTimes Game Data:", error);
     res.status(500).send("Internal Server Error");

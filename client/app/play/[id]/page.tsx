@@ -87,11 +87,17 @@ const Play = () => {
     fetch("http://127.0.0.1:8000/todaysData")
       .then((response) => response.json())
       .then((data) => {
+        console.log({ data });
         setGameData(data);
-        setLoading(false);
       })
       .catch((error) => console.error("Error:", error));
   }, []);
+
+  useEffect(() => {
+    if (users.length && gameData.outerLetters.length) {
+      setLoading(false);
+    }
+  }, [users, gameData]);
 
   useEffect(() => {
     if (inputRef.current) {
