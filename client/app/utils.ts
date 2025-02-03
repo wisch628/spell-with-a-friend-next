@@ -1,11 +1,11 @@
-export const callApiRoute = async (route: string, body: any) => {
+export const callPostRoute = async (route: string, body: any) => {
         const response = await fetch(`http://localhost:8000/${route}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(body),
-      });
+      }).then((response) => response.json())
       return response;
 }
 

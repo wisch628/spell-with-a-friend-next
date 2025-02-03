@@ -2,6 +2,7 @@
 
 import {
   KeyboardEventHandler,
+  useCallback,
   useEffect,
   useMemo,
   useRef,
@@ -13,7 +14,7 @@ import { GameUser, WordContainer, WordObject } from "./WordContainer";
 import { GameData } from "./types";
 import { GameTopNav } from "./GameTopNav";
 import { useParams } from "next/navigation";
-import { captialize } from "@/app/utils";
+import { callPostRoute, captialize } from "@/app/utils";
 import {
   calculateScores,
   pangramCheck,
@@ -21,15 +22,19 @@ import {
   wordErrorCheck,
 } from "./utils";
 import { ToastContainer, toast } from "react-toastify";
-import { ChatBox } from "@/components/ChatBox";
+import { ChatBox, Message } from "@/components/ChatBox";
 import { EMPTY_GAME_DATA } from "./consts";
 
 const Play = () => {
   const [gameData, setGameData] = useState<GameData>(EMPTY_GAME_DATA);
   const [users, setUsers] = useState<GameUser[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [foundWords, setFoundWords] = useState<WordObject[]>([]);
   const [player, setPlayer] = useState<GameUser | null>(null);
   const [popup, setPopup] = useState<"chat" | "">("");
+  const [loading, setLoading] = useState(true);
+  const [currentWord, setCurrentWord] = useState("");
+  const [notifications, setNotifications] = useState(0);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const params = useParams();
   const gameId = params.id as string;
@@ -41,9 +46,21 @@ const Play = () => {
     }, {} as { [key: string]: number });
   }, [users]);
 
+  const setNewMessages = useCallback(
+    (messages: Message[]) => {
+      setMessages(messages);
+      if (popup !== "chat") {
+        setNotifications(notifications + 1);
+      } else {
+        setNotifications(0);
+      }
+    },
+    [popup, notifications]
+  );
+
   useEffect(() => {
-    setupSockets(gameId, setFoundWords);
-  }, [gameId]);
+    setupSockets(gameId, setFoundWords, setNewMessages);
+  }, [gameId, setNewMessages]);
   useEffect(() => {
     // Call the Python endpoint
     fetch(`http://127.0.0.1:8000/game/${gameId}`)
@@ -85,8 +102,6 @@ const Play = () => {
       inputRef.current.focus();
     }
   }, [gameData]);
-  const [loading, setLoading] = useState(true);
-  const [currentWord, setCurrentWord] = useState("");
 
   const score = useMemo(() => {
     return calculateScores(foundWords, mappedUserScores);
@@ -103,7 +118,7 @@ const Play = () => {
     setCurrentWord(e?.target?.value);
   };
 
-  const checkWord: KeyboardEventHandler<HTMLInputElement> = async (e) => {
+  const submitWord: KeyboardEventHandler<HTMLInputElement> = async (e) => {
     if (e.key === "Enter") {
       const { centerLetter, outerLetters, pangrams, answers } = gameData;
       const newWord = currentWord.toLowerCase();
@@ -123,21 +138,12 @@ const Play = () => {
       if (isPangram) {
         toast.info("Pangram!");
       }
-      await fetch(`http://localhost:8000/words/${gameId}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          color: player?.color,
-          word: newWord,
-          isPangram,
-        }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          setFoundWords(data.words);
-        });
+      const data = await callPostRoute(`words/${gameId}`, {
+        color: player?.color,
+        word: newWord,
+        isPangram,
+      });
+      setFoundWords(data.words);
       setCurrentWord("");
     }
   };
@@ -146,6 +152,7 @@ const Play = () => {
     if (popup === "chat") {
       setPopup("");
     } else {
+      setNotifications(0);
       setPopup("chat");
     }
   };
@@ -178,7 +185,13 @@ const Play = () => {
           user={player as GameUser}
         />
         <nav className="bottom">
-          <button onClick={togglePopUp}>Chat Box</button>
+          <button
+            className={notifications > 0 ? "notification" : ""}
+            onClick={togglePopUp}
+            data-count={notifications}
+          >
+            Chat Box
+          </button>
         </nav>
         {/* {this.state.popUp === "team" && (
           <TeamPopUp togglePopUp={this.togglePopUp} />
@@ -205,7 +218,7 @@ const Play = () => {
               type="text"
               value={currentWord}
               onChange={typeWord}
-              onKeyUp={checkWord}
+              onKeyUp={submitWord}
             />
             <Letters
               gameData={gameData}
@@ -215,7 +228,12 @@ const Play = () => {
             />
           </div>
           {popup === "chat" && (
-            <ChatBox users={users} currentPlayer={player as GameUser} />
+            <ChatBox
+              users={users}
+              currentPlayer={player as GameUser}
+              messages={messages}
+              setMessages={setMessages}
+            />
           )}
         </div>
       </div>

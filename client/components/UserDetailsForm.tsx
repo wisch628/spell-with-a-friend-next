@@ -15,7 +15,7 @@ const UserDetailsForm = ({
   newGame: boolean;
   colors?: string[];
 }) => {
-  const [color, setColor] = useState("Red");
+  const [color, setColor] = useState(colors[0]);
   const [displayName, setDisplayName] = useState("");
 
   return (

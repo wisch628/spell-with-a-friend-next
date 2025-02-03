@@ -11,7 +11,6 @@
 }
 
 nav {
-  overflow: hidden;
   position: fixed;
   width: 100%;
   margin: 0px;
@@ -71,10 +70,32 @@ nav.bottom {
 nav.bottom>button {
   width: 400px;
   right: 0;
-  border: 0;
   background-color: #f7da22;
   color: #333;
   font-size: 20px;
+}
+
+.notification {
+  border: 2px solid red;
+}
+
+.notification::after {
+  content: attr(data-count);
+  /* This will take the value of the data-count attribute */
+  position: absolute;
+  top: -10px;
+  right: 385px;
+  width: 25px;
+  height: 25px;
+  background-color: red;
+  border-radius: 50%;
+  border: 1px solid white;
+  color: white;
+  text-align: center;
+  font-size:medium
+  /* visibility: hidden; */
+      /* Hide the notification circle by default */
+
 }
 
 

@@ -1,5 +1,6 @@
 import { SetStateAction } from "react";
 import { WordObject } from "./WordContainer";
+import { Message } from "@/components/ChatBox";
 
 
 
@@ -29,7 +30,7 @@ export const pangramCheck = ({newWord, pangrams}: {newWord: string, pangrams: st
      
 }
 
-export const setupSockets = (gameId: string, setFoundWords: (value: SetStateAction<WordObject[]>) => void) => {
+export const setupSockets = (gameId: string, setFoundWords: (value: SetStateAction<WordObject[]> ) => void, setMessages: (messages: Message[]) => void) => {
       const socket = new WebSocket(`ws://localhost:8000/words/${gameId}`);
   
       socket.onopen = () => {
@@ -40,6 +41,9 @@ export const setupSockets = (gameId: string, setFoundWords: (value: SetStateActi
         const json = JSON.parse(event.data);
         if (json.type === "new_word") {
           setFoundWords(json.words);
+        }
+           if (json.type === "new_message") {
+          setMessages(json.messages);
         }
       };
   

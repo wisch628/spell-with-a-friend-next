@@ -4,7 +4,7 @@ import { PageWrapper } from "@/components/PageWrapper";
 import { UserDetailsBody } from "@/components/types";
 import UserDetailsForm from "@/components/UserDetailsForm";
 import { useState } from "react";
-import { callApiRoute } from "../utils";
+import { callPostRoute } from "../utils";
 import { useRouter } from "next/navigation";
 import { defaultColors } from "@/components/constants";
 
@@ -32,24 +32,15 @@ const JoinGame = () => {
   };
 
   const goToGame = async ({ displayName, color }: UserDetailsBody) => {
-    try {
-      const response = await callApiRoute(`game/${gameCode}/user`, {
-        display_name: displayName,
-        color,
-      });
-      if (response.ok) {
-        // Change the URL to the game page with the game code
-        localStorage.setItem(gameCode, displayName);
-        router.push(`/play/${gameCode}`);
-      } else {
-        const error = await response.json();
-        //  setErrorMessage(error.error || "Failed to create the game");
-      }
-    } catch (error) {
-      console.error("Error creating game:", error);
-      //  setErrorMessage("Something went wrong");
-    }
+    await callPostRoute(`game/${gameCode}/user`, {
+      display_name: displayName,
+      color,
+    });
+    // Change the URL to the game page with the game code
+    localStorage.setItem(gameCode, displayName);
+    router.push(`/play/${gameCode}`);
   };
+
   return (
     <PageWrapper>
       {gameLoaded ? (
