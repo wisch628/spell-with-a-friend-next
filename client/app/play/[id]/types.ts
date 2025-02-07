@@ -6,3 +6,5 @@ export interface GameData {
   outerLetters: string[];
   pangrams: string[];
 }
+
+export type PopUp = "chat" | "invite" | "";

@@ -11,7 +11,7 @@ import {
 import { Letters } from "./Letters";
 import { Loading } from "./Loading";
 import { GameUser, WordContainer, WordObject } from "./WordContainer";
-import { GameData } from "./types";
+import { GameData, PopUp } from "./types";
 import { GameTopNav } from "./GameTopNav";
 import { useParams } from "next/navigation";
 import { callPostRoute, captialize } from "@/app/utils";
@@ -24,6 +24,7 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import { ChatBox, Message } from "@/components/ChatBox";
 import { EMPTY_GAME_DATA } from "./consts";
+import { InvitePopUp } from "@/components/InvitePopup";
 
 const Play = () => {
   const [gameData, setGameData] = useState<GameData>(EMPTY_GAME_DATA);
@@ -31,7 +32,7 @@ const Play = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [foundWords, setFoundWords] = useState<WordObject[]>([]);
   const [player, setPlayer] = useState<GameUser | null>(null);
-  const [popup, setPopup] = useState<"chat" | "">("");
+  const [popup, setPopup] = useState<PopUp>("");
   const [loading, setLoading] = useState(true);
   const [currentWord, setCurrentWord] = useState("");
   const [notifications, setNotifications] = useState(0);
@@ -39,11 +40,14 @@ const Play = () => {
   const params = useParams();
   const gameId = params.id as string;
 
-  const mappedUserScores = useMemo(() => {
-    return users.reduce((acc, users) => {
-      acc[users.color] = 0;
+  const [colorToUser, scores] = useMemo(() => {
+    const colorToUser: Record<string, string> = {};
+    const scores = users.reduce((acc, { color, display_name }) => {
+      acc[color] = 0;
+      colorToUser[color] = display_name;
       return acc;
     }, {} as { [key: string]: number });
+    return [colorToUser, scores];
   }, [users]);
 
   const setNewMessages = useCallback(
@@ -71,6 +75,27 @@ const Play = () => {
       })
       .catch((error) => console.error("Error:", error));
   }, [gameId]);
+
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setPopup("");
+      }
+    };
+    const handleClickOutside = () => {
+      if (popup == "invite") {
+        setPopup("");
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [popup]);
 
   useEffect(() => {
     if (!users.length) return;
@@ -104,8 +129,8 @@ const Play = () => {
   }, [gameData]);
 
   const score = useMemo(() => {
-    return calculateScores(foundWords, mappedUserScores);
-  }, [foundWords, mappedUserScores]);
+    return calculateScores(foundWords, scores);
+  }, [foundWords, scores]);
   // Ensure the input is always focused when the component renders
   useEffect(() => {
     if (inputRef.current) {
@@ -148,12 +173,13 @@ const Play = () => {
     }
   };
 
-  const togglePopUp = () => {
-    if (popup === "chat") {
+  const togglePopUp = (newPopup: PopUp) => {
+    if (newPopup == popup) {
       setPopup("");
     } else {
-      setNotifications(0);
-      setPopup("chat");
+      if (newPopup === "chat") setNotifications(0);
+      console.log({ newPopup });
+      setPopup(newPopup);
     }
   };
 
@@ -170,39 +196,37 @@ const Play = () => {
     return (
       <div style={style} onKeyDown={typeWords}>
         <ToastContainer />
-        {/* {this.state.popUp === "seen" && (
-          <InvitePopUp togglePopUp={this.togglePopUp} />
-        )} */}
-        {/* {this.state.popUp === "sideMenu" && (
-          <TabletMenu togglePopUp={this.togglePopUp} classProp="in" />
-        )}{" "} */}
-        {/* {this.state.popUp === "out" && (
-          <TabletMenu classProp="out" togglePopUp={this.togglePopUp} />
-        )} */}
+        {popup === "invite" && (
+          <InvitePopUp
+            gameCode={gameId}
+            togglePopup={() => togglePopUp("invite")}
+          />
+        )}
         <GameTopNav
           displayDate={gameData.displayDate}
           displayWeekday={gameData.displayWeekday}
           user={player as GameUser}
+          togglePopUp={togglePopUp}
         />
         <nav className="bottom">
           <button
             className={notifications > 0 ? "notification" : ""}
-            onClick={togglePopUp}
+            onClick={() => togglePopUp("chat")}
             data-count={notifications}
           >
             Chat Box
           </button>
         </nav>
-        {/* {this.state.popUp === "team" && (
-          <TeamPopUp togglePopUp={this.togglePopUp} />
-        )} */}
         <div className="flex">
           <div>
             <div className="score">
-              {Object.keys(score).map((color) => {
+              {Object.keys(score).map((id) => {
+                console.log(score);
                 return (
-                  <p className={["correct", color].join(" ")} key={color}>
-                    {`${captialize(color)}: ${score[color]}`}
+                  <p className={["correct", id].join(" ")} key={id}>
+                    {`${captialize(id == "total" ? id : colorToUser[id])}: ${
+                      score[id]
+                    }`}
                   </p>
                 );
               })}
