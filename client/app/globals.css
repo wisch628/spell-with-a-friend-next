@@ -7,6 +7,7 @@
 * {
   box-sizing: border-box;
   font-weight: 200;
+  font-family: "Libre Franklin";
 }
 
 nav {
@@ -29,6 +30,7 @@ nav.top {
   border-top: 1px solid #e6e6e6;
   border-bottom: 1px solid #e6e6e6;
   font-family: 'Roboto Slab', serif;
+  font-weight: 500;
 }
 
 h1 {
@@ -180,7 +182,6 @@ nav.top button {
       display: flex;
       justify-content: space-evenly;
       font-family: 'Roboto Slab', serif;
-      font-weight: 400;
     }
 
  .Red {
@@ -326,18 +327,17 @@ nav.top button {
     justify-content: space-between;
     align-items: center;
     width: 60%;
-    max-width: 230px;
-    font-weight: 500;
+    max-width: 270px;
+    font-weight: inherit;
+    font-family: inherit;
     @media screen and (max-width: 540px) {
         max-width: 100%;
         width: 100%;
       }
  }
 
- .left-container div {
-  font-family: "Libre Franklin";
- }
 
- span, p {
+ span, p, button, h3, .left-container {
   font-weight: inherit;
+  font-family: inherit;
  }

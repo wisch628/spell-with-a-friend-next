@@ -27,30 +27,20 @@ export const GameTopNav = ({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const getGameInfo = () => {
-    return (
-      <>
+  return (
+    <nav className="top">
+      {!isMobile && (
+        <h3>
+          {displayWeekday} {displayDate}
+        </h3>
+      )}
+      <div className="nav_child">
         {" "}
         <h3>
           Player:{" "}
           <span className={user.color}>{captialize(user.display_name)}</span>
         </h3>
         <button onClick={() => togglePopUp("invite")}>Invite Friends</button>
-      </>
-    );
-  };
-  return (
-    <nav className="top">
-      {!isMobile && <div className="nav_child">{getGameInfo()}</div>}
-
-      <div className="nav_child">
-        {isMobile ? (
-          getGameInfo()
-        ) : (
-          <h3>
-            {displayWeekday} {displayDate}
-          </h3>
-        )}
         <Link href="/">
           <button>X</button>
         </Link>
