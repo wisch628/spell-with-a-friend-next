@@ -10,7 +10,7 @@ import { captialize } from "@/app/utils";
 import { calculateScores, setupSockets } from "./utils";
 import { ToastContainer } from "react-toastify";
 import { ChatBox, Message } from "@/components/ChatBox";
-import { EMPTY_GAME_DATA } from "./consts";
+import { EMPTY_GAME_DATA, INVITE_FRIEND_ROUTE } from "./consts";
 import { InvitePopUp } from "@/components/InvitePopup";
 import { useRouter } from "next/navigation";
 import { LeftContainer } from "./LeftContainer";
@@ -96,8 +96,7 @@ const Play = () => {
     if (!users.length) return;
     const savedName = localStorage.getItem(gameId as string);
     if (!savedName) {
-      router.push(`/join?${gameId}`);
-      return;
+      router.push(`${INVITE_FRIEND_ROUTE}${gameId}`);
     }
     const savedPlayer = users.find(
       ({ display_name }) => display_name === savedName
@@ -116,10 +115,10 @@ const Play = () => {
   }, []);
 
   useEffect(() => {
-    if (users.length && gameData.outerLetters.length) {
+    if (users.length && gameData.outerLetters.length && player) {
       setLoading(false);
     }
-  }, [users, gameData]);
+  }, [users, gameData, player]);
 
   const score = useMemo(() => {
     return calculateScores(foundWords, scores);

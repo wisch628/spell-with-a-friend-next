@@ -8,3 +8,5 @@ export const EMPTY_GAME_DATA: GameData = {
     answers: [],
     pangrams: [],
   }
+
+  export const INVITE_FRIEND_ROUTE = "/join?gameCode="

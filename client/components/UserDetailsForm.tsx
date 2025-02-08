@@ -2,7 +2,7 @@
 
 import ColorSelector from "./ColorSelector";
 import { PageWrapper } from "./PageWrapper";
-import { useState } from "react";
+import { KeyboardEventHandler, useState } from "react";
 import { UserDetailsBody } from "./types";
 import { defaultColors } from "./constants";
 
@@ -18,6 +18,12 @@ const UserDetailsForm = ({
   const [color, setColor] = useState(colors[0]);
   const [displayName, setDisplayName] = useState("");
 
+  const pressEnter: KeyboardEventHandler<HTMLInputElement> = async (e) => {
+    if (e.key === "Enter") {
+      onClick({ displayName, color });
+    }
+  };
+
   return (
     <PageWrapper>
       <div className="userLogin">
@@ -28,6 +34,7 @@ const UserDetailsForm = ({
           name="displayName"
           value={displayName}
           onChange={(event) => setDisplayName(event.target.value)}
+          onKeyUp={pressEnter}
         />
         <ColorSelector color={color} setColor={setColor} colors={colors} />
         <button onClick={() => onClick({ displayName, color })}>

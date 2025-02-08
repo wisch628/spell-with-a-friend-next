@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import styling from "@/components/home.module.css";
 import { PageWrapper } from "@/components/PageWrapper";
+import { CreateNewGameButton } from "@/components/CreateNewGameButton";
 
 export default function Home() {
   return (
@@ -19,9 +20,7 @@ export default function Home() {
             <h1>Welcome to spell with a friend!</h1>
             <h2>Click below to get started</h2>
             <div>
-              <Link href="/new">
-                <button>Create a New Game</button>
-              </Link>
+              <CreateNewGameButton />
               <Link href="/join">
                 <button>Join an Active Game</button>
               </Link>

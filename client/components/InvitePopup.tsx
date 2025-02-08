@@ -1,3 +1,4 @@
+import { INVITE_FRIEND_ROUTE } from "@/app/play/[id]/consts";
 import { ForwardedRef, forwardRef } from "react";
 
 export const InvitePopUp = forwardRef(
@@ -11,7 +12,7 @@ export const InvitePopUp = forwardRef(
     },
     ref: ForwardedRef<HTMLInputElement>
   ) => {
-    const url = `www.${window.location.host}/join?game=${gameCode}`;
+    const url = `www.${window.location.host}${INVITE_FRIEND_ROUTE}${gameCode}`;
     return (
       <div className="modal">
         <div className="modal_content" ref={ref}>

@@ -3,16 +3,23 @@
 import { PageWrapper } from "@/components/PageWrapper";
 import { UserDetailsBody } from "@/components/types";
 import UserDetailsForm from "@/components/UserDetailsForm";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { callPostRoute } from "../utils";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { defaultColors } from "@/components/constants";
+import { CreateNewGameButton } from "@/components/CreateNewGameButton";
 
 const JoinGame = () => {
   const [gameLoaded, setGameLoaded] = useState(false);
   const [gameCode, setGameCode] = useState("");
   const [availableColors, setAvailableColors] = useState<string[]>([]);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const gameCodeFromParams = searchParams.get("gameCode");
+
+  useEffect(() => {
+    if (gameCodeFromParams) setGameCode(gameCodeFromParams as string);
+  }, [gameCodeFromParams]);
 
   const getGame = () => {
     if (!gameLoaded) {
@@ -40,6 +47,16 @@ const JoinGame = () => {
     localStorage.setItem(gameCode, displayName);
     router.push(`/play/${gameCode}`);
   };
+  if (availableColors.length === 0) {
+    return (
+      <PageWrapper>
+        <div>
+          <p>Sorry, that game is full. Create a new one below!</p>
+          <CreateNewGameButton />
+        </div>
+      </PageWrapper>
+    );
+  }
 
   return (
     <PageWrapper>
