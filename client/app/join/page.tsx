@@ -47,7 +47,7 @@ const JoinGame = () => {
     localStorage.setItem(gameCode, displayName);
     router.push(`/play/${gameCode}`);
   };
-  if (availableColors.length === 0) {
+  if (gameLoaded && availableColors.length === 0) {
     return (
       <PageWrapper>
         <div>

@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer');
 const client = require('../db');
+const WebSocket = require('ws');  // Add this line
 
 const addUser = async (display_name, color, game_code) => {
  const insertUserGameQuery = `
@@ -111,6 +112,12 @@ exports.createNewGame = async (req, res) => {
   }
 };
 
+    const selectGameUsers = `
+      SELECT color, display_name
+      FROM game_users
+      WHERE game_code = $1
+    `;
+
 exports.getGame = async (req, res) => {
   const game_code = req.params.id
 
@@ -120,11 +127,7 @@ exports.getGame = async (req, res) => {
     await client.query('BEGIN');
 
     // Insert the new game into the games table
-    const selectGameUsers = `
-      SELECT color, display_name
-      FROM game_users
-      WHERE game_code = $1
-    `;
+
     const selectGameWords = `
       SELECT color, word, points
       FROM words
@@ -158,8 +161,19 @@ exports.createNewUser = async (req, res) => {
 
   try {
 
-   await addUser(display_name, color, game_code)
-    // Respond with the new game details
+   await addUser(display_name, color, game_code)       
+    const users = await client.query(selectGameUsers, [game_code]);
+
+    req.wss.clients.forEach((client) => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(JSON.stringify({
+          message: `${display_name} just joined the game!`,
+          users: users.rows,
+          type: 'new_user'
+        }));
+      }
+    });
+
     await res.status(201).json({
       message: 'User created successfully',
       game: { game_code, created_at: new Date(), display_name, color },

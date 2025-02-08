@@ -12,7 +12,7 @@ export const InvitePopUp = forwardRef(
     },
     ref: ForwardedRef<HTMLInputElement>
   ) => {
-    const url = `www.${window.location.host}${INVITE_FRIEND_ROUTE}${gameCode}`;
+    const url = `${window.location.host}${INVITE_FRIEND_ROUTE}${gameCode}`;
     return (
       <div className="modal">
         <div className="modal_content" ref={ref}>

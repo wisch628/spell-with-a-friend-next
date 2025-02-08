@@ -54,7 +54,7 @@ const Play = () => {
   );
 
   useEffect(() => {
-    setupSockets(gameId, setFoundWords, setNewMessages);
+    setupSockets(gameId, setFoundWords, setNewMessages, setUsers);
   }, [gameId, setNewMessages]);
   useEffect(() => {
     // Call the Python endpoint
