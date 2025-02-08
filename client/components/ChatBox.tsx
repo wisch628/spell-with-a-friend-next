@@ -114,6 +114,7 @@ export const ChatBox = ({
           placeholder="Write your message"
           value={currentMessage}
           onChange={(e) => setCurrentMessage(e.target.value)}
+          className="chatbox-input"
         />
         <span className="input-group-btn">
           <button id="chatButton" className="btn btn-default" type="submit">

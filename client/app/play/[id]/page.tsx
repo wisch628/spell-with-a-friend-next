@@ -26,7 +26,8 @@ const Play = () => {
   const [notifications, setNotifications] = useState(0);
   const params = useParams();
   const router = useRouter();
-  const teamPopupRef = useRef<HTMLInputElement | null>(null);
+  const teamPopupRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const gameId = params.id as string;
 
@@ -70,15 +71,14 @@ const Play = () => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setPopup("");
+        inputRef?.current?.focus();
       }
     };
     const handleClickOutside = (event: MouseEvent) => {
-      event.preventDefault();
       if (
         popup == "invite" &&
         !teamPopupRef?.current?.contains(event.target as Node)
       ) {
-        console.log({ event });
         setPopup("");
       }
     };
@@ -130,16 +130,13 @@ const Play = () => {
       setPopup("");
     } else {
       if (newPopup === "chat") setNotifications(0);
-      if (newPopup === "invite") teamPopupRef?.current?.focus();
-
-      console.log({ newPopup });
       setPopup(newPopup);
     }
   };
 
   const typeWords = () => {
-    if (popup !== "chat") {
-      togglePopUp("");
+    if (popup == "") {
+      inputRef?.current?.focus();
     }
   };
 
@@ -188,6 +185,8 @@ const Play = () => {
             <WordContainer correctWords={foundWords} />
           </div>
           <LeftContainer
+            inputRef={inputRef}
+            typingEnabled={popup === ""}
             gameData={gameData}
             player={player as GameUser}
             setFoundWords={setFoundWords}

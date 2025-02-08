@@ -372,3 +372,9 @@ h5 {
   margin: 7px 0 7px 138px;
   cursor: pointer;
 }
+
+.chatbox-input {
+  margin: 0;
+  width: 100%;
+  text-align: left;
+}

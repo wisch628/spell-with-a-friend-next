@@ -2,9 +2,9 @@ import { Letters } from "./Letters";
 import {
   Dispatch,
   KeyboardEventHandler,
+  RefObject,
   SetStateAction,
   useEffect,
-  useRef,
   useState,
 } from "react";
 import { pangramCheck, wordErrorCheck } from "./utils";
@@ -19,15 +19,19 @@ export const LeftContainer = ({
   foundWords,
   setFoundWords,
   player,
+  inputRef,
+  typingEnabled,
 }: {
   gameData: GameData;
   foundWords: WordObject[];
   setFoundWords: Dispatch<SetStateAction<WordObject[]>>;
   player: GameUser;
+  inputRef: RefObject<HTMLInputElement | null>;
+  typingEnabled: boolean;
 }) => {
   const [currentWord, setCurrentWord] = useState("");
-  const { gameId } = useParams();
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const params = useParams();
+  const gameId = params.id;
 
   const submitWord: KeyboardEventHandler<HTMLInputElement> = async (e) => {
     if (e.key === "Enter") {
@@ -64,10 +68,12 @@ export const LeftContainer = ({
   };
 
   useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
+    if (typingEnabled) {
+      inputRef?.current?.focus();
+    } else {
+      inputRef?.current?.blur();
     }
-  }, [gameData, currentWord]);
+  }, [gameData, currentWord, inputRef, typingEnabled]);
   return (
     <div className="left-container">
       <input

@@ -22,7 +22,6 @@ export const wordErrorCheck = ({foundWords, answers, newWord, centerLetter, oute
 }
 
 export const pangramCheck = ({newWord, pangrams}: {newWord: string, pangrams: string[]}) => {
-      debugger;
       if (pangrams.includes(newWord)) {
         return true
       }

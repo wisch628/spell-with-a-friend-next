@@ -13,8 +13,8 @@ export const InvitePopUp = forwardRef(
   ) => {
     const url = `www.${window.location.host}/join?game=${gameCode}`;
     return (
-      <div className="modal" ref={ref}>
-        <div className="modal_content">
+      <div className="modal">
+        <div className="modal_content" ref={ref}>
           <span className="close" onClick={togglePopup}>
             &times;
           </span>
