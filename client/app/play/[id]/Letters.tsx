@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Hexagon } from "./Hexagon";
 import { GameData } from "./types";
+import Image from "next/image";
 
 export const Letters = ({
   gameData,
@@ -24,9 +25,14 @@ export const Letters = ({
 
   return (
     <div>
-      <button type="button" onClick={shuffleLetters}>
-        Shuffle Letters
-      </button>
+      <Image
+        onClick={shuffleLetters}
+        src="/images/shuffle.png"
+        alt="shuffle"
+        height={30}
+        width={30}
+        className="shuffle"
+      />
       <div className="game-container" onClick={letterClick}>
         <div className="game-wrapper">
           <Hexagon

@@ -1,12 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;200;300;400;500;600;700;800;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,100..900;1,100..900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 * {
   box-sizing: border-box;
-  font-weight: 200;
   font-family: "Libre Franklin";
 }
 
@@ -17,7 +16,6 @@ nav {
   left: 0;
   display: flex;
   flex-wrap: nowrap;
-
 }
 
 nav.top {
@@ -29,7 +27,7 @@ nav.top {
   padding: 0 15px 0 25px;
   border-top: 1px solid #e6e6e6;
   border-bottom: 1px solid #e6e6e6;
-  font-family: 'Roboto Slab', serif;
+  font-family: "Roboto Slab", serif;
   font-weight: 500;
 }
 
@@ -54,7 +52,7 @@ h5 {
 
 input {
   outline: 0;
-  border-width: 0 0 .5px 0;
+  border-width: 0 0 0.5px 0;
   border-color: #e6e6e6;
   font-size: 14px;
   margin: 0px auto auto auto;
@@ -70,7 +68,7 @@ nav.bottom {
   z-index: 1;
 }
 
-nav.bottom>button {
+nav.bottom > button {
   width: 400px;
   right: 0;
   background-color: #f7da22;
@@ -94,251 +92,283 @@ nav.bottom>button {
   border: 1px solid white;
   color: white;
   text-align: center;
-  font-size:medium
+  font-size: medium;
 }
-
 
 nav.top button {
   height: 30px;
 }
 
- .cell-bottom {
-   float: left;
-   border-left: 30px solid #e6e6e6;
-   border-top: 52px solid transparent;
-   border-bottom: 52px solid transparent;
- }
+.cell-bottom {
+  float: left;
+  border-left: 30px solid #e6e6e6;
+  border-top: 52px solid transparent;
+  border-bottom: 52px solid transparent;
+}
 
- .cell-top {
-   float: left;
-   border-right: 30px solid #e6e6e6;
-   border-top: 52px solid transparent;
-   border-bottom: 52px solid transparent;
+.cell-top {
+  float: left;
+  border-right: 30px solid #e6e6e6;
+  border-top: 52px solid transparent;
+  border-bottom: 52px solid transparent;
+}
 
- }
+.cell-center {
+  float: left;
+  width: 60px;
+  height: 104px;
+  background-color: #e6e6e6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
- .cell-center {
-   float: left;
-   width: 60px;
-   height: 104px;
-   background-color: #e6e6e6;
-    display: flex;
-        align-items: center;
-        justify-content: center;
- }
+.hex {
+  float: left;
+  margin-right: -26px;
+  margin-bottom: -50px;
+}
 
+.hex.odd {
+  padding-top: 53px;
+}
 
- .hex {
-   float: left;
-   margin-right: -26px;
-   margin-bottom: -50px;
- }
+.game-wrapper {
+  width: 290px;
+  background-color: pink;
+  font-weight: 600;
+}
 
- .hex.odd {
-   padding-top: 53px;
- }
+.center .cell-center {
+  background-color: #f7da22;
+}
 
- .game-wrapper {
-   width: 290px;
-   background-color: pink;
- }
+.center .cell-top {
+  border-right: 30px solid #f7da22;
+}
 
- .center .cell-center {
-   background-color: #f7da22;
- }
+.center .cell-bottom {
+  border-left: 30px solid #f7da22;
+}
 
- .center .cell-top {
-   border-right: 30px solid #f7da22;
- }
+.special {
+  padding-left: 93.5px;
+}
 
- .center .cell-bottom {
-   border-left: 30px solid #f7da22;
- }
+.word-wrapper {
+  border-radius: 10px;
+  border: 1px solid #e6e6e6;
+  padding: 30px;
+  height: fit-content;
+}
 
- .special {
-   padding-left: 93.5px;
- }
+.flex {
+  display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
+  margin: 70px auto 0;
+  justify-content: space-between;
+  padding-top: 50px;
+  max-width: 900px;
+  column-gap: 50px;
+  row-gap: 30px;
+}
 
- .right-container {
-   border-radius: 10px;
-   border: 1px solid #e6e6e6;
-   padding: 30px;
-   height: fit-content;
-   width: 450px;
+.score {
+  display: flex;
+  justify-content: space-evenly;
+  font-family: "Roboto Slab", serif;
+}
 
- }
+.correct {
+  text-align: left;
+  border-bottom: 1px solid #e6e6e6;
+  width: 90px;
+  margin: 10px;
+}
 
- .flex {
-   display: flex;
-   flex-direction: row-reverse;
-   flex-wrap: wrap;
-   margin: 70px auto 0;
-   justify-content: space-between;
-   padding-top: 50px;
-   max-width: 900px;;
- }
+.Red {
+  color: red;
+}
 
-    .score {
-      display: flex;
-      justify-content: space-evenly;
-      font-family: 'Roboto Slab', serif;
-    }
+.Orange {
+  color: orange;
+}
 
- .Red {
-   color: red
- }
+.Green {
+  color: green;
+}
 
- .Orange {
-   color: orange
- }
+.Blue {
+  color: blue;
+}
 
- .Green {
-   color: green
- }
+.Purple {
+  color: purple;
+}
 
- .Blue {
-   color: blue
- }
+.messageContainer {
+  width: 400px;
+  border: 0.5px solid black;
+  min-height: 200px;
+  bottom: 0;
+  position: fixed;
+  left: 0;
+  margin-bottom: 50px;
+  background-color: white;
+  z-index: 1;
+  max-height: 400px;
+  overflow: auto;
+}
 
- .Purple {
-   color: purple
- }
+.innerMessages {
+  margin-bottom: 50px;
+  margin-top: 20px;
+  max-height: 400px;
+  overflow: scroll;
+}
 
- .messageContainer {
-   width: 400px;
-   border: .5px solid black;
-   min-height: 200px;
-   bottom: 0;
-   position: fixed;
-   left: 0;
-   margin-bottom: 50px;
-   background-color: white;
-   z-index: 1;
-   max-height: 400px;
-   overflow: auto;
- }
+.message {
+  color: grey;
+  text-align: left;
+  width: 200px;
+  margin: auto 20px;
+}
 
- .innerMessages {
-   margin-bottom: 50px;
-   margin-top: 20px;
-   max-height: 400px;
-   overflow: scroll;
- }
+.message > p {
+  background-color: rgb(34, 34, 58);
+  color: white;
+  border-radius: 50px;
+  padding: 10px;
+  max-width: 200px;
+}
 
- .message {
-   color: grey;
-   text-align: left;
-   width: 200px;
-   margin: auto 20px;
- }
+.my-message {
+  color: grey;
+  text-align: right;
+  width: 300px;
+  margin-left: 80px;
+}
 
- .message>p {
-   background-color: rgb(34, 34, 58);
-   color: white;
-   border-radius: 50px;
-   padding: 10px;
-   max-width: 200px;
- }
+.my-message > p {
+  color: white;
+  border-radius: 50px;
+  padding: 10px;
+  max-width: 200px;
+  margin-left: 120px;
+  width: auto;
+  text-align: left;
+}
 
- .my-message {
-   color: grey;
-   text-align: right;
-   width: 300px;
-   margin-left: 80px;
- }
+#new-message-form {
+  width: 400px;
+  font-size: 16px;
+  border-top: 0.5px solid black;
+  border-right: 0.5px solid black;
+  border-left: 0.5px solid black;
+  margin-left: -0.5px;
+  padding: 10px 20px 5px 20px;
+  z-index: 2;
+  position: fixed;
+  bottom: 0;
+  margin-bottom: 50px;
+  background-color: white;
+  display: flex;
+}
 
- .my-message>p {
-   color: white;
-   border-radius: 50px;
-   padding: 10px;
-   max-width: 200px;
-   margin-left: 120px;
-   width: auto;
-   text-align: left;
- }
+.Red.message > p {
+  background-color: red;
+}
 
- #new-message-form {
-   width: 400px;
-   font-size: 16px;
-   border-top: .5px solid black;
-   border-right: .5px solid black;
-  border-left: .5px solid black;
-    margin-left: -.5px;
-   padding: 10px 20px 5px 20px;
-   z-index: 2;
-   position: fixed;
-   bottom: 0;
-   margin-bottom: 50px;
-   background-color: white;
-   display: flex;
- }
+.Orange.message > p {
+  background-color: orange;
+}
 
- .Red.message>p {
-   background-color: red
- }
+.Green.message > p {
+  background-color: green;
+}
 
- .Orange.message>p {
-   background-color: orange
- }
+.Blue.message > p {
+  background-color: blue;
+}
 
- .Green.message>p {
-   background-color: green
- }
+.Purple.message > p {
+  background-color: purple;
+}
 
- .Blue.message>p {
-   background-color: blue
- }
+.modal {
+  position: fixed;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.25);
+}
 
- .Purple.message>p {
-   background-color: purple
- }
+.modal_content {
+  background-color: white;
+  position: absolute;
+  top: 20%;
+  left: 30%;
+  width: 40%;
+  padding: 20px;
+  border-radius: 5px;
+  border: 2px solid black;
+}
 
- .modal {
-   position: fixed;
-   z-index: 2;
-   width: 100%;
-   height: 100%;
-   background-color: rgba(0, 0, 0, 0.25);
- }
+.close {
+  color: Black;
+  float: right;
+}
 
- .modal_content {
-   background-color: white;
-   position: absolute;
-   top: 20%;
-   left: 30%;
-   width: 40%;
-   padding: 20px;
-   border-radius: 5px;
-   border: 2px solid black;
- }
+.close:hover {
+  color: #f7da22;
+  cursor: pointer;
+}
 
- .close {
-   color: Black;
-   float: right;
- }
-
- .close:hover {
-   color: #f7da22;
-   cursor: pointer;
- }
-
- .nav_child {
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    align-items: center;
-    width: 60%;
-    max-width: 270px;
-    font-weight: inherit;
-    font-family: inherit;
-    @media screen and (max-width: 540px) {
-        max-width: 100%;
-        width: 100%;
-      }
- }
-
-
- span, p, button, h3, .left-container {
-  font-weight: inherit;
+.nav_child {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 60%;
+  max-width: 270px;
   font-family: inherit;
- }
+  @media screen and (max-width: 540px) {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+span,
+p,
+button,
+h3,
+.left-container,
+h5 {
+  font-family: inherit;
+}
+
+.word-container {
+  min-width: 300px;
+  width: 100%;
+  max-width: 430px;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 40px;
+  height: fit-content;
+}
+
+.right-container {
+  font-weight: 200;
+  margin: auto;
+}
+
+.left-container {
+  margin: auto;
+  font-family: inherit;
+}
+
+.shuffle {
+  margin: 7px 0 7px 138px;
+  cursor: pointer;
+}

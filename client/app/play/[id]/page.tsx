@@ -1,30 +1,19 @@
 "use client";
 
-import {
-  KeyboardEventHandler,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import { Letters } from "./Letters";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Loading } from "./Loading";
 import { GameUser, WordContainer, WordObject } from "./WordContainer";
 import { GameData, PopUp } from "./types";
 import { GameTopNav } from "./GameTopNav";
 import { useParams } from "next/navigation";
-import { callPostRoute, captialize } from "@/app/utils";
-import {
-  calculateScores,
-  pangramCheck,
-  setupSockets,
-  wordErrorCheck,
-} from "./utils";
-import { ToastContainer, toast } from "react-toastify";
+import { captialize } from "@/app/utils";
+import { calculateScores, setupSockets } from "./utils";
+import { ToastContainer } from "react-toastify";
 import { ChatBox, Message } from "@/components/ChatBox";
 import { EMPTY_GAME_DATA } from "./consts";
 import { InvitePopUp } from "@/components/InvitePopup";
+import { useRouter } from "next/navigation";
+import { LeftContainer } from "./LeftContainer";
 
 const Play = () => {
   const [gameData, setGameData] = useState<GameData>(EMPTY_GAME_DATA);
@@ -34,10 +23,11 @@ const Play = () => {
   const [player, setPlayer] = useState<GameUser | null>(null);
   const [popup, setPopup] = useState<PopUp>("");
   const [loading, setLoading] = useState(true);
-  const [currentWord, setCurrentWord] = useState("");
   const [notifications, setNotifications] = useState(0);
-  const inputRef = useRef<HTMLInputElement | null>(null);
   const params = useParams();
+  const router = useRouter();
+  const teamPopupRef = useRef<HTMLInputElement | null>(null);
+
   const gameId = params.id as string;
 
   const [colorToUser, scores] = useMemo(() => {
@@ -82,8 +72,13 @@ const Play = () => {
         setPopup("");
       }
     };
-    const handleClickOutside = () => {
-      if (popup == "invite") {
+    const handleClickOutside = (event: MouseEvent) => {
+      event.preventDefault();
+      if (
+        popup == "invite" &&
+        !teamPopupRef?.current?.contains(event.target as Node)
+      ) {
+        console.log({ event });
         setPopup("");
       }
     };
@@ -100,11 +95,15 @@ const Play = () => {
   useEffect(() => {
     if (!users.length) return;
     const savedName = localStorage.getItem(gameId as string);
+    if (!savedName) {
+      router.push(`/join?${gameId}`);
+      return;
+    }
     const savedPlayer = users.find(
       ({ display_name }) => display_name === savedName
     ) as GameUser;
     setPlayer(savedPlayer);
-  }, [users, gameId]);
+  }, [users, gameId, router]);
 
   useEffect(() => {
     // Call the Python endpoint
@@ -122,62 +121,17 @@ const Play = () => {
     }
   }, [users, gameData]);
 
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [gameData]);
-
   const score = useMemo(() => {
     return calculateScores(foundWords, scores);
   }, [foundWords, scores]);
-  // Ensure the input is always focused when the component renders
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [currentWord]);
-
-  const typeWord: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    e.preventDefault();
-    setCurrentWord(e?.target?.value);
-  };
-
-  const submitWord: KeyboardEventHandler<HTMLInputElement> = async (e) => {
-    if (e.key === "Enter") {
-      const { centerLetter, outerLetters, pangrams, answers } = gameData;
-      const newWord = currentWord.toLowerCase();
-      const errorMessage = wordErrorCheck({
-        newWord,
-        foundWords,
-        centerLetter,
-        outerLetters,
-        answers,
-      });
-      if (errorMessage) {
-        toast.error(errorMessage);
-        setCurrentWord("");
-        return;
-      }
-      const isPangram = pangramCheck({ newWord, pangrams });
-      if (isPangram) {
-        toast.info("Pangram!");
-      }
-      const data = await callPostRoute(`words/${gameId}`, {
-        color: player?.color,
-        word: newWord,
-        isPangram,
-      });
-      setFoundWords(data.words);
-      setCurrentWord("");
-    }
-  };
 
   const togglePopUp = (newPopup: PopUp) => {
     if (newPopup == popup) {
       setPopup("");
     } else {
       if (newPopup === "chat") setNotifications(0);
+      if (newPopup === "invite") teamPopupRef?.current?.focus();
+
       console.log({ newPopup });
       setPopup(newPopup);
     }
@@ -185,7 +139,7 @@ const Play = () => {
 
   const typeWords = () => {
     if (popup !== "chat") {
-      inputRef?.current?.focus();
+      togglePopUp("");
     }
   };
 
@@ -198,6 +152,7 @@ const Play = () => {
         <ToastContainer />
         {popup === "invite" && (
           <InvitePopUp
+            ref={teamPopupRef}
             gameCode={gameId}
             togglePopup={() => togglePopUp("invite")}
           />
@@ -218,12 +173,11 @@ const Play = () => {
           </button>
         </nav>
         <div className="flex">
-          <div>
+          <div className="right-container">
             <div className="score">
               {Object.keys(score).map((id) => {
-                console.log(score);
                 return (
-                  <p className={["correct", id].join(" ")} key={id}>
+                  <p className={[id].join(" ")} key={id}>
                     {`${captialize(id == "total" ? id : colorToUser[id])}: ${
                       score[id]
                     }`}
@@ -233,24 +187,13 @@ const Play = () => {
             </div>
             <WordContainer correctWords={foundWords} />
           </div>
-          <div className="left-container">
-            <input
-              ref={inputRef}
-              placeholder="Type Your Word"
-              name="currentWord"
-              id="wordField"
-              type="text"
-              value={currentWord}
-              onChange={typeWord}
-              onKeyUp={submitWord}
-            />
-            <Letters
-              gameData={gameData}
-              onClickLetter={(letter: string) =>
-                setCurrentWord(currentWord + letter)
-              }
-            />
-          </div>
+          <LeftContainer
+            gameData={gameData}
+            player={player as GameUser}
+            setFoundWords={setFoundWords}
+            foundWords={foundWords}
+          />
+
           {popup === "chat" && (
             <ChatBox
               users={users}
