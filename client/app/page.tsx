@@ -18,7 +18,7 @@ export default function Home() {
           {/* {isLoggedIn ? ( */}
           <div>
             <h1>Welcome to spell with a friend!</h1>
-            <h2>Click below to get started</h2>
+            <h2>A multiplayer version of the NYTimes Spelling Bee</h2>
             <div>
               <CreateNewGameButton />
               <Link href="/join">
