@@ -3,13 +3,13 @@
 import { PageWrapper } from "@/components/PageWrapper";
 import { UserDetailsBody } from "@/components/types";
 import UserDetailsForm from "@/components/UserDetailsForm";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { callPostRoute } from "../utils";
 import { useRouter, useSearchParams } from "next/navigation";
 import { defaultColors } from "@/components/constants";
 import { CreateNewGameButton } from "@/components/CreateNewGameButton";
 
-const JoinGame = () => {
+const JoinGameContent = () => {
   const [gameLoaded, setGameLoaded] = useState(false);
   const [gameCode, setGameCode] = useState("");
   const [availableColors, setAvailableColors] = useState<string[]>([]);
@@ -81,6 +81,14 @@ const JoinGame = () => {
         </div>
       )}
     </PageWrapper>
+  );
+};
+
+const JoinGame = () => {
+  return (
+    <Suspense>
+      <JoinGameContent />
+    </Suspense>
   );
 };
 

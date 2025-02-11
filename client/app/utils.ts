@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const callPostRoute = async (route: string, body: any) => {
         const response = await fetch(`http://localhost:8000/${route}`, {
         method: "POST",
