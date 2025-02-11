@@ -38,6 +38,7 @@ exports.getTodaysData = async (_, res) => {
        // Launch the browser
     const browser = await puppeteer.launch({
       headless: true, // Set to 'false' to see the browser window
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
 
     // Create a new page
