@@ -5,7 +5,7 @@ const createWebSocketServer = require('./websocket');
 const app = express();
 
 // Set up CORS and Express
-app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(cors({ origin: process.env.CLIENT_URL }));
 app.use(express.json());
 
 // Create HTTP server for Express
