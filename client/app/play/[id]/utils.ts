@@ -1,7 +1,6 @@
 import { SetStateAction } from "react";
 import { GameUser, WordObject } from "./WordContainer";
 import { Message } from "@/components/ChatBox";
-import { toast } from "react-toastify";
 
 
 
@@ -30,7 +29,7 @@ export const pangramCheck = ({newWord, pangrams}: {newWord: string, pangrams: st
      
 }
 
-export const setupSockets = (gameId: string, setFoundWords: (value: SetStateAction<WordObject[]> ) => void, setMessages: (messages: Message[]) => void, setUsers: (messages: GameUser[]) => void) => {
+export const setupSockets = (gameId: string, setFoundWords: (value: SetStateAction<WordObject[]> ) => void, setMessages: (messages: Message[]) => void, newUserJoined: (users: GameUser[], message: string) => void) => {
       const socket = new WebSocket(`ws://localhost:8000/words/${gameId}`);
   
       socket.onopen = () => {
@@ -46,8 +45,7 @@ export const setupSockets = (gameId: string, setFoundWords: (value: SetStateActi
           setMessages(json.messages);
         }
         if (json.type === "new_user") {
-          setUsers(json.users);
-          toast.info(json.message)
+          newUserJoined(json.users, json.message);
         } 
       };
   

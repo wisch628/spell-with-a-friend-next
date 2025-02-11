@@ -8,7 +8,7 @@ import { GameTopNav } from "./GameTopNav";
 import { useParams } from "next/navigation";
 import { captialize } from "@/app/utils";
 import { calculateScores, setupSockets } from "./utils";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { ChatBox, Message } from "@/components/ChatBox";
 import { EMPTY_GAME_DATA, INVITE_FRIEND_ROUTE } from "./consts";
 import { InvitePopUp } from "@/components/InvitePopup";
@@ -53,9 +53,20 @@ const Play = () => {
     [popup, notifications]
   );
 
+  const prevUsersCount = useRef(users.length);
+
+  const newUserJoined = useCallback((newUsers: GameUser[], message: string) => {
+    if (newUsers.length > prevUsersCount.current) {
+      setUsers(newUsers);
+      prevUsersCount.current = newUsers.length;
+      toast.info(message);
+    }
+  }, []);
+
   useEffect(() => {
-    setupSockets(gameId, setFoundWords, setNewMessages, setUsers);
-  }, [gameId, setNewMessages]);
+    setupSockets(gameId, setFoundWords, setNewMessages, newUserJoined);
+  }, [gameId, setNewMessages, newUserJoined]);
+
   useEffect(() => {
     // Call the Python endpoint
     fetch(`http://127.0.0.1:8000/game/${gameId}`)

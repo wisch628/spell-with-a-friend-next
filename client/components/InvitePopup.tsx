@@ -1,4 +1,5 @@
 import { INVITE_FRIEND_ROUTE } from "@/app/play/[id]/consts";
+import Link from "next/link";
 import { ForwardedRef, forwardRef } from "react";
 
 export const InvitePopUp = forwardRef(
@@ -12,7 +13,7 @@ export const InvitePopUp = forwardRef(
     },
     ref: ForwardedRef<HTMLInputElement>
   ) => {
-    const url = `${window.location.host}${INVITE_FRIEND_ROUTE}${gameCode}`;
+    const url = `${INVITE_FRIEND_ROUTE}${gameCode}`;
     return (
       <div className="modal">
         <div className="modal_content" ref={ref}>
@@ -20,7 +21,14 @@ export const InvitePopUp = forwardRef(
             &times;
           </span>
           <h3>Invite friends to join at</h3>
-          <p className="Blue">{url}</p>
+          <Link
+            className="Blue"
+            href={url}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            {window.location.host + url}
+          </Link>
         </div>
       </div>
     );
