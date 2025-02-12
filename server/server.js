@@ -24,8 +24,8 @@ app.use('/', (req, res, next) => {
 }, routes);
 
 // Start the server
-server.listen(8000, () => {
-  console.log('Server running on http://localhost:8000');
+app.listen(8000, '0.0.0.0', () => {
+    console.log('Server running on port 8000');
 });
 
 module.exports = { app, wss }; // Export if needed
