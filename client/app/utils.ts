@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const callPostRoute = async (route: string, body: any) => {
-        const response = await fetch(`http://${process.env.NEXT_PUBLIC_BACKEND_URL}/${route}`, {
+        const response = await fetch(`http://localhost:8000/${route}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
