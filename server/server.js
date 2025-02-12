@@ -5,7 +5,14 @@ const createWebSocketServer = require('./websocket');
 const app = express();
 
 // Set up CORS and Express
-app.use(cors({ origin: process.env.CLIENT_URL }));
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    methods: "GET,POST,PUT,DELETE",
+    allowedHeaders: "Content-Type",
+  })
+);
+console.log("client: ", process.env.CLIENT_URL)
 app.use(express.json());
 
 // Create HTTP server for Express

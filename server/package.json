@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "CLIENT_URL=http://localhost:3000 node server.js",
+    "prod": "CLIENT_URL=http://18.119.126.107 node server.js"
   },
   "keywords": [],
   "author": "",
