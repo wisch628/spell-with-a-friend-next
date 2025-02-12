@@ -19,7 +19,7 @@ app.use(express.json());
 const server = http.createServer(app);
 
 // Initialize WebSocket server
-const wss = createWebSocketServer(server);
+const wss = createWebSocketServer();
 
 // Routes (import routes after WebSocket server is created)
 const routes = require('./routes');
@@ -31,7 +31,7 @@ app.use('/', (req, res, next) => {
 }, routes);
 
 // Start the server
-app.listen(8000, '0.0.0.0', () => {
+app.listen(8000, () => {
     console.log('Server running on port 8000');
 });
 

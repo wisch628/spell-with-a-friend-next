@@ -30,7 +30,7 @@ export const pangramCheck = ({newWord, pangrams}: {newWord: string, pangrams: st
 }
 
 export const setupSockets = (gameId: string, setFoundWords: (value: SetStateAction<WordObject[]> ) => void, setMessages: (messages: Message[]) => void, newUserJoined: (users: GameUser[], message: string) => void) => {
-      const socket = new WebSocket(`ws://localhost:8000/words/${gameId}`);
+      const socket = new WebSocket(`ws://localhost:8001/words/${gameId}`);
   
       socket.onopen = () => {
         console.log("WebSocket connection established");
