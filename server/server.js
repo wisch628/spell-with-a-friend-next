@@ -12,7 +12,6 @@ app.use(
     allowedHeaders: "Content-Type",
   })
 );
-console.log("client: ", process.env.CLIENT_URL)
 app.use(express.json());
 
 // Create HTTP server for Express
@@ -27,6 +26,7 @@ const routes = require('./routes');
 // Pass the WebSocket server to routes
 app.use('/', (req, res, next) => {
   req.wss = wss; // Attach the WebSocket server to the request object
+  console.log("Request origin:", req.headers.origin);  // Log the origin
   next();
 }, routes);
 
