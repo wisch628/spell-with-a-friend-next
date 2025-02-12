@@ -1,6 +1,7 @@
 import { SetStateAction } from "react";
 import { GameUser, WordObject } from "./WordContainer";
 import { Message } from "@/components/ChatBox";
+import { getBackendUrl } from "@/app/utils";
 
 
 
@@ -30,7 +31,7 @@ export const pangramCheck = ({newWord, pangrams}: {newWord: string, pangrams: st
 }
 
 export const setupSockets = (gameId: string, setFoundWords: (value: SetStateAction<WordObject[]> ) => void, setMessages: (messages: Message[]) => void, newUserJoined: (users: GameUser[], message: string) => void) => {
-      const socket = new WebSocket(`ws://localhost:8001/words/${gameId}`);
+      const socket = new WebSocket(`ws://${getBackendUrl(true)}/words/${gameId}`);
   
       socket.onopen = () => {
         console.log("WebSocket connection established");

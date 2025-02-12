@@ -6,7 +6,7 @@ import { GameUser, WordContainer, WordObject } from "./WordContainer";
 import { GameData, PopUp } from "./types";
 import { GameTopNav } from "./GameTopNav";
 import { useParams } from "next/navigation";
-import { captialize } from "@/app/utils";
+import { captialize, getBackendUrl } from "@/app/utils";
 import { calculateScores, setupSockets } from "./utils";
 import { toast, ToastContainer } from "react-toastify";
 import { ChatBox, Message } from "@/components/ChatBox";
@@ -69,7 +69,7 @@ const Play = () => {
 
   useEffect(() => {
     // Call the Python endpoint
-    fetch(`http://localhost:8000/game/${gameId}`)
+    fetch(`http://${getBackendUrl()}/game/${gameId}`)
       .then((response) => response.json())
       .then((data) => {
         setFoundWords(data.words);
@@ -117,7 +117,7 @@ const Play = () => {
 
   useEffect(() => {
     // Call the Python endpoint
-    fetch(`http://localhost:8000/todaysData`)
+    fetch(`http://${getBackendUrl()}/todaysData`)
       .then((response) => response.json())
       .then((data) => {
         setGameData(data);

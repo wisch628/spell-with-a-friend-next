@@ -7,7 +7,7 @@ import React, {
   useState,
 } from "react";
 import { GameUser } from "@/app/play/[id]/WordContainer";
-import { callPostRoute } from "@/app/utils";
+import { callPostRoute, getBackendUrl } from "@/app/utils";
 import { useParams } from "next/navigation";
 
 export interface Message {
@@ -42,7 +42,7 @@ export const ChatBox = ({
 
   useEffect(() => {
     // Call the Python endpoint
-    fetch(`http://localhost:8000/messages/${gameId}`)
+    fetch(`http://${getBackendUrl()}/messages/${gameId}`)
       .then((response) => response.json())
       .then((data) => {
         setMessages(data.messages);

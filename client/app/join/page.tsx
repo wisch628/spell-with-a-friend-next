@@ -4,7 +4,7 @@ import { PageWrapper } from "@/components/PageWrapper";
 import { UserDetailsBody } from "@/components/types";
 import UserDetailsForm from "@/components/UserDetailsForm";
 import { Suspense, useEffect, useState } from "react";
-import { callPostRoute } from "../utils";
+import { callPostRoute, getBackendUrl } from "../utils";
 import { useRouter, useSearchParams } from "next/navigation";
 import { defaultColors } from "@/components/constants";
 import { CreateNewGameButton } from "@/components/CreateNewGameButton";
@@ -23,7 +23,7 @@ const JoinGameContent = () => {
 
   const getGame = () => {
     if (!gameLoaded) {
-      fetch(`http://localhost:8000/game/${gameCode}`)
+      fetch(`http://${getBackendUrl()}/game/${gameCode}`)
         .then((response) => response.json())
         .then((response) => {
           const usedColors = response.users.map(
