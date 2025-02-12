@@ -69,7 +69,7 @@ const Play = () => {
 
   useEffect(() => {
     // Call the Python endpoint
-    fetch(`http://127.0.0.1:8000/game/${gameId}`)
+    fetch(`http://${process.env.NEXT_PUBLIC_BACKEND_URL}/game/${gameId}`)
       .then((response) => response.json())
       .then((data) => {
         setFoundWords(data.words);
@@ -117,7 +117,7 @@ const Play = () => {
 
   useEffect(() => {
     // Call the Python endpoint
-    fetch("http://127.0.0.1:8000/todaysData")
+    fetch(`http://${process.env.NEXT_PUBLIC_BACKEND_URL}/todaysData`)
       .then((response) => response.json())
       .then((data) => {
         setGameData(data);

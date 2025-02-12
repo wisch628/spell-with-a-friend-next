@@ -42,7 +42,7 @@ export const ChatBox = ({
 
   useEffect(() => {
     // Call the Python endpoint
-    fetch(`http://127.0.0.1:8000/messages/${gameId}`)
+    fetch(`http://${process.env.NEXT_PUBLIC_BACKEND_URL}/messages/${gameId}`)
       .then((response) => response.json())
       .then((data) => {
         setMessages(data.messages);

@@ -23,7 +23,7 @@ const JoinGameContent = () => {
 
   const getGame = () => {
     if (!gameLoaded) {
-      fetch(`http://127.0.0.1:8000/game/${gameCode}`)
+      fetch(`http://${process.env.NEXT_PUBLIC_BACKEND_URL}/game/${gameCode}`)
         .then((response) => response.json())
         .then((response) => {
           const usedColors = response.users.map(
