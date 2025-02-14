@@ -29,9 +29,10 @@ app.prepare().then(() => {
       });
     });
   }
+  const port = dev ? 3000 : 80
 
-  server.listen(3000, (err) => {
+  server.listen(port, (err) => {
     if (err) throw err;
-    console.log("> Ready on http://localhost:3000");
+    console.log(`Ready on http://localhost:${port}`);
   });
 });
