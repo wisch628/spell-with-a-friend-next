@@ -15,9 +15,8 @@ export default function Home() {
             src="/images/double-bee.png"
             alt="bee icon"
             width={100}
-            height={100}
+            height={45.31}
           />
-          {/* {isLoggedIn ? ( */}
           <div>
             <h1>Welcome to spell with a friend!</h1>
             <h2>A multiplayer version of the NYTimes Spelling Bee</h2>

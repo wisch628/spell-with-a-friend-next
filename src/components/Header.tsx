@@ -11,7 +11,7 @@ export const Header = () => {
           src="/images/nyt-logo.png"
           alt="nytimes-logo"
           width={100}
-          height={100}
+          height={25.39}
         />
       </div>
     </nav>
