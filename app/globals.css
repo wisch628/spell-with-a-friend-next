@@ -52,6 +52,8 @@ body {
   text-align: center;
   background-color: white;
   margin: 0;
+  touch-action: manipulation;
+  overscroll-behavior: contain;
 }
 
 h5 {
@@ -63,7 +65,7 @@ input {
   outline: 0;
   border-width: 0 0 0.5px 0;
   border-color: #e6e6e6;
-  font-size: 14px;
+  font-size: 18px;
   margin: 0px auto auto auto;
   text-align: center;
   caret-color: transparent;
@@ -119,6 +121,7 @@ nav.top button {
   border: 1px solid #e6e6e6;
   padding: 6px 10px;
   background: none;
+  font-size: 18px;
 }
 
 .close {
@@ -156,7 +159,7 @@ nav.top button {
 }
 
 .hex.odd {
-  padding-top: 53px;
+  margin-top: 53px;
 }
 
 .game-wrapper {

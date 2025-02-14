@@ -160,7 +160,7 @@ const Play = () => {
     }
   };
 
-  const typeWords = () => {
+  const resetFocus = () => {
     if (popup == "") {
       inputRef?.current?.focus();
     }
@@ -171,7 +171,7 @@ const Play = () => {
   } else {
     const style = { backgroundColor: "white" };
     return (
-      <div style={style} onKeyDown={typeWords}>
+      <div style={style} onKeyDown={resetFocus} onClick={resetFocus}>
         <ToastContainer />
         {popup === "invite" && (
           <InvitePopUp
