@@ -161,8 +161,11 @@ nav.top button {
 
 .game-wrapper {
   width: 290px;
-  background-color: pink;
   font-weight: 600;
+}
+
+.game-container {
+  margin-left: -20px;
 }
 
 .center .cell-center {
@@ -409,17 +412,18 @@ h5 {
 
 .right-container {
   font-weight: 200;
-  margin: auto;
+  margin: 0 auto 10px;
 }
 
 .left-container {
   margin: auto;
   font-family: inherit;
   height: 500px;
+  padding-left: 20px;
 }
 
 .shuffle {
-  margin: 7px 0 7px 14px;
+  margin: 7px 0;
   cursor: pointer;
 }
 
