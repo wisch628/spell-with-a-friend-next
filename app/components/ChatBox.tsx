@@ -20,12 +20,10 @@ export const ChatBox = ({
   currentPlayer,
   users,
   messages,
-  setMessages,
 }: {
   currentPlayer: GameUser;
   users: GameUser[];
   messages: Message[];
-  setMessages: Dispatch<SetStateAction<Message[]>>;
 }) => {
   const params = useParams();
   const gameId = params.id as string;
@@ -39,16 +37,6 @@ export const ChatBox = ({
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
-
-  useEffect(() => {
-    // Call the Python endpoint
-    fetch(`/api/messages/${gameId}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setMessages(data.messages);
-      })
-      .catch((error) => console.error("Error:", error));
-  }, [gameId, setMessages]);
 
   const sendMessage = async (event?: React.FormEvent) => {
     event?.preventDefault();

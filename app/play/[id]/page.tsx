@@ -65,13 +65,15 @@ const Play = () => {
 
   useEffect(() => {
     popupRef.current = popup;
+    const length = messages.length;
     setupSockets(
       gameId,
       setFoundWords,
       (messages) => setNewMessages(messages, popupRef.current),
-      newUserJoined
+      newUserJoined,
+      length
     );
-  }, [gameId, newUserJoined, setNewMessages, popup]);
+  }, [gameId, newUserJoined, setNewMessages, popup, messages.length]);
 
   useEffect(() => {
     // Call the Python endpoint
@@ -80,6 +82,13 @@ const Play = () => {
       .then((data) => {
         setFoundWords(data.words);
         setUsers(data.users);
+      })
+      .catch((error) => console.error("Error:", error));
+
+    fetch(`/api/messages/${gameId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setMessages(data.messages);
       })
       .catch((error) => console.error("Error:", error));
   }, [gameId]);
@@ -144,7 +153,9 @@ const Play = () => {
     if (newPopup == popup) {
       setPopup("");
     } else {
-      if (newPopup === "chat") setNotifications(0);
+      if (newPopup === "chat") {
+        setNotifications(0);
+      }
       setPopup(newPopup);
     }
   };
@@ -213,7 +224,6 @@ const Play = () => {
               users={users}
               currentPlayer={player as GameUser}
               messages={messages}
-              setMessages={setMessages}
             />
           )}
         </div>
