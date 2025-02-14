@@ -9,11 +9,11 @@ import { useParams } from "next/navigation";
 import { captialize } from "@/app/utils";
 import { calculateScores, setupSockets } from "./utils";
 import { toast, ToastContainer } from "react-toastify";
-import { ChatBox, Message } from "@/app/components/ChatBox";
 import { EMPTY_GAME_DATA, INVITE_FRIEND_ROUTE } from "./consts";
-import { InvitePopUp } from "@/app/components/InvitePopup";
 import { useRouter } from "next/navigation";
 import { LeftContainer } from "./LeftContainer";
+import { ChatBox, Message } from "../../components/ChatBox";
+import { InvitePopUp } from "../../components/InvitePopup";
 
 const Play = () => {
   const [gameData, setGameData] = useState<GameData>(EMPTY_GAME_DATA);

@@ -1,13 +1,13 @@
 "use client";
 
-import { PageWrapper } from "@/app/components/PageWrapper";
-import { UserDetailsBody } from "@/app/components/types";
-import UserDetailsForm from "@/app/components/UserDetailsForm";
 import { Suspense, useEffect, useState } from "react";
 import { callPostRoute } from "../utils";
 import { useRouter, useSearchParams } from "next/navigation";
-import { defaultColors } from "@/app/components/constants";
-import { CreateNewGameButton } from "@/app/components/CreateNewGameButton";
+import { PageWrapper } from "../components/PageWrapper";
+import { UserDetailsBody } from "../components/types";
+import { defaultColors } from "../components/constants";
+import { CreateNewGameButton } from "../components/CreateNewGameButton";
+import UserDetailsForm from "../components/UserDetailsForm";
 
 const JoinGameContent = () => {
   const [gameLoaded, setGameLoaded] = useState(false);

@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { PageWrapper } from "@/app/components/PageWrapper";
-import { CreateNewGameButton } from "@/app/components/CreateNewGameButton";
+import { PageWrapper } from "./components/PageWrapper";
+import { CreateNewGameButton } from "./components/CreateNewGameButton";
 
 export default function Home() {
   return (
     <PageWrapper>
       <div>
-        <div className="center">
+        <div className="home_wrapper">
           <Image
             src="/images/double-bee.png"
             alt="bee icon"
