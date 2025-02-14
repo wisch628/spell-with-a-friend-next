@@ -41,19 +41,6 @@ const Play = () => {
     return [colorToUser, scores];
   }, [users]);
 
-  const setNewMessages = useCallback(
-    (messages: Message[]) => {
-      console.log({ messages, popup });
-      setMessages(messages);
-      if (popup !== "chat") {
-        setNotifications(notifications + 1);
-      } else {
-        setNotifications(0);
-      }
-    },
-    [popup, notifications]
-  );
-
   const prevUsersCount = useRef(users.length);
 
   const newUserJoined = useCallback((newUsers: GameUser[], message: string) => {
@@ -64,9 +51,25 @@ const Play = () => {
     }
   }, []);
 
+  const setNewMessages = useCallback(
+    (messages: Message[], currentPopUp: PopUp) => {
+      setMessages(messages);
+      setNotifications((prev) => (currentPopUp !== "chat" ? prev + 1 : 0));
+    },
+    []
+  );
+
+  const popupRef = useRef(popup);
+
   useEffect(() => {
-    setupSockets(gameId, setFoundWords, setNewMessages, newUserJoined);
-  }, [gameId, setNewMessages, newUserJoined]);
+    popupRef.current = popup;
+    setupSockets(
+      gameId,
+      setFoundWords,
+      (messages) => setNewMessages(messages, popupRef.current),
+      newUserJoined
+    );
+  }, [gameId, newUserJoined, setNewMessages, popup]);
 
   useEffect(() => {
     // Call the Python endpoint
