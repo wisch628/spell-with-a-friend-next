@@ -17,7 +17,7 @@ exports.addWord = async (req, res) => {
     const game_code = req.params.id
   const { word, color, isPangram } = req.body;
 
-  if (!word || !color || !game_code) {
+  if (!word || !color || !gameCode) {
     return res.status(400).json({ error: 'missing required values' });
   }
 
@@ -33,7 +33,7 @@ exports.addWord = async (req, res) => {
       WHERE word = $1
       and game_code = $2
     `;
-    const wordExists = await client.query(checkIfExists, [word, game_code]);
+    const wordExists = await client.query(checkIfExists, [word, gameCode]);
     if (wordExists.rows.length > 0) {
       throw Error('That word already exists')
     }
@@ -43,7 +43,7 @@ exports.addWord = async (req, res) => {
       INSERT INTO words (game_code, color, word, points)
       VALUES ($1, $2, $3, $4)
     `;
-    await client.query(insertWordQuery, [game_code, color, word, points]);
+    await client.query(insertWordQuery, [gameCode, color, word, points]);
 
     // Commit the transaction
     await client.query('COMMIT');
@@ -52,7 +52,7 @@ exports.addWord = async (req, res) => {
       FROM words
       WHERE game_code = $1
     `;
-    const words = await client.query(getUpdatedWords, [game_code]);
+    const words = await client.query(getUpdatedWords, [gameCode]);
 
     req.wss.clients.forEach((client) => {
       if (client.readyState === WebSocket.OPEN) {

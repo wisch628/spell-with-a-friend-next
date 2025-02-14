@@ -5,27 +5,8 @@ import Image from "next/image";
 import styling from "@/components/home.module.css";
 import { PageWrapper } from "@/components/PageWrapper";
 import { CreateNewGameButton } from "@/components/CreateNewGameButton";
-import { useEffect } from "react";
-import { io } from "socket.io-client";
 
 export default function Home() {
-  useEffect(() => {
-    const socket = io();
-
-    socket.on("connect", () => {
-      console.log("Connected to server");
-    });
-    fetch("/api/game/5982ch", { method: "GET" })
-      .then((response) => response.json())
-      .then((response) => {
-        console.log({ response });
-      });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
-
   return (
     <PageWrapper>
       <div>

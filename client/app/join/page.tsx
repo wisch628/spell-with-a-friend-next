@@ -4,7 +4,7 @@ import { PageWrapper } from "@/components/PageWrapper";
 import { UserDetailsBody } from "@/components/types";
 import UserDetailsForm from "@/components/UserDetailsForm";
 import { Suspense, useEffect, useState } from "react";
-import { callPostRoute, getBackendUrl } from "../utils";
+import { callPostRoute } from "../utils";
 import { useRouter, useSearchParams } from "next/navigation";
 import { defaultColors } from "@/components/constants";
 import { CreateNewGameButton } from "@/components/CreateNewGameButton";
@@ -23,7 +23,7 @@ const JoinGameContent = () => {
 
   const getGame = () => {
     if (!gameLoaded) {
-      fetch(`http://${getBackendUrl()}/game/${gameCode}`)
+      fetch(`/api/game/${gameCode}`)
         .then((response) => response.json())
         .then((response) => {
           const usedColors = response.users.map(
@@ -39,7 +39,7 @@ const JoinGameContent = () => {
   };
 
   const goToGame = async ({ displayName, color }: UserDetailsBody) => {
-    await callPostRoute(`game/${gameCode}/user`, {
+    await callPostRoute(`/api/game/${gameCode}`, {
       display_name: displayName,
       color,
     });

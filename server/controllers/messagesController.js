@@ -2,10 +2,10 @@ const client = require('../db');
 const WebSocket = require('ws');  // Add this line
 
 exports.sendMessage = async (req, res) => {
-    const game_code = req.params.id
+    const gameCode = req.params.id
   const { content, color } = req.body;
 
-  if (!content || !color || !game_code) {
+  if (!content || !color || !gameCode) {
     return res.status(400).json({ error: 'missing required values' });
   }
 
@@ -18,7 +18,7 @@ exports.sendMessage = async (req, res) => {
       INSERT INTO messages (game_code, color, content)
       VALUES ($1, $2, $3)
     `;
-    await client.query(insertMessageQuery, [game_code, color, content]);
+    await client.query(insertMessageQuery, [gameCode, color, content]);
 
     // Commit the transaction
     await client.query('COMMIT');
@@ -27,7 +27,7 @@ exports.sendMessage = async (req, res) => {
       FROM messages
       WHERE game_code = $1
     `;
-    const messages = await client.query(getUpdatedMessages, [game_code]);
+    const messages = await client.query(getUpdatedMessages, [gameCode]);
 
     req.wss.clients.forEach((client) => {
       if (client.readyState === WebSocket.OPEN) {
@@ -52,7 +52,7 @@ exports.sendMessage = async (req, res) => {
 };
 
 exports.getMessages = async (req, res) => {
-  const game_code = req.params.id
+  const gameCode = req.params.id
 
   try {
 

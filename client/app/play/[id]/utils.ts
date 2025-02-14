@@ -38,7 +38,7 @@ export const setupSockets = (gameId: string, setFoundWords: (value: SetStateActi
 
       })
       socket.on('joinedRoom', (message) => {
-        console.log({message})
+        console.log("someone joined", {message})
       })
 
        socket.on('game_loaded', () => {
@@ -54,6 +54,7 @@ export const setupSockets = (gameId: string, setFoundWords: (value: SetStateActi
       })
 
         socket.on('new_user', (event) => {
+          console.log('a new user', event)
           newUserJoined(event.users, event.message);
       })
   

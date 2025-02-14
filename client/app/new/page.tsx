@@ -9,14 +9,14 @@ const NewGame = () => {
   const router = useRouter(); // Use the Next.js router
 
   const createGame = async ({ displayName, color }: UserDetailsBody) => {
-    const data = await callPostRoute("game", {
+    const data = await callPostRoute("/api/game", {
       display_name: displayName,
       color,
     });
 
     // Change the URL to the game page with the game code
-    localStorage.setItem(data.game.game_code, displayName);
-    router.push(`/play/${data.game.game_code}`);
+    localStorage.setItem(data.game.gameCode, displayName);
+    router.push(`/play/${data.game.gameCode}`);
   };
 
   return <UserDetailsForm onClick={createGame} newGame />;
