@@ -43,6 +43,7 @@ const Play = () => {
 
   const setNewMessages = useCallback(
     (messages: Message[]) => {
+      console.log({ messages, popup });
       setMessages(messages);
       if (popup !== "chat") {
         setNotifications(notifications + 1);
