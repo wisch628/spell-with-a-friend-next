@@ -54,9 +54,9 @@ const Play = () => {
   const setNewMessages = useCallback(
     (messages: Message[], currentPopUp: PopUp) => {
       setMessages(messages);
-      setNotifications((prev) => (currentPopUp !== "chat" ? prev + 1 : 0));
+      setNotifications(currentPopUp !== "chat" ? notifications + 1 : 0);
     },
-    []
+    [notifications]
   );
 
   const popupRef = useRef(popup);
