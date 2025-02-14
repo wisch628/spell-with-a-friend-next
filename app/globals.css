@@ -29,15 +29,23 @@ nav.top {
   border-bottom: 1px solid #e6e6e6;
   font-family: "Roboto Slab", serif;
   font-weight: 500;
+  background-color: white;
 }
 
 h1 {
   font-weight: 900;
   font-size: xxx-large;
+  margin: 0 0 10px;
+  @media screen and (max-width: 500px) {
+    font-size: xx-large;
+  }
 }
 
 h2 {
   font-size: x-large;
+  @media screen and (max-width: 500px) {
+    font-size: large;
+  }
 }
 
 body {
@@ -190,6 +198,10 @@ nav.top button {
   max-width: 900px;
   column-gap: 50px;
   row-gap: 30px;
+  overflow-x: hidden;
+  @media screen and (max-width: 540px) {
+    padding-top: 10px;
+  }
 }
 
 .score {
@@ -237,19 +249,20 @@ nav.top button {
   z-index: 1;
   max-height: 400px;
   overflow: auto;
+  max-width: 100%;
 }
 
 .innerMessages {
   margin-bottom: 50px;
   margin-top: 20px;
   max-height: 400px;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .message {
   color: grey;
   text-align: left;
-  width: 200px;
   margin: auto 20px;
 }
 
@@ -265,7 +278,6 @@ nav.top button {
 .my-message {
   color: grey;
   text-align: right;
-  width: 300px;
   margin-left: 80px;
 }
 
@@ -273,9 +285,8 @@ nav.top button {
   color: white;
   border-radius: 20px;
   padding: 10px;
-  max-width: 200px;
-  margin-left: 120px;
-  width: auto;
+  min-width: 70%;
+  margin-left: 30%;
   text-align: left;
   overflow-wrap: break-word;
 }
@@ -294,6 +305,7 @@ nav.top button {
   margin-bottom: 50px;
   background-color: white;
   display: flex;
+  max-width: 100%;
 }
 
 .Red.message > p {
@@ -346,15 +358,29 @@ nav.top button {
   color: #f7da22;
 }
 
+.loaderContainer {
+  margin: 20% auto;
+  max-width: 70%;
+}
+
+.join_wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  max-width: 400px;
+  margin: 30px auto;
+}
+
 .nav_child {
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;
   align-items: center;
-  width: 60%;
-  max-width: 270px;
+  max-width: 100%;
+  width: 350px;
   font-family: inherit;
-  font-weight: 300px;
+  gap: 10px;
+  margin-left: 20px;
   @media screen and (max-width: 540px) {
     max-width: 100%;
     width: 100%;
@@ -389,6 +415,7 @@ h5 {
 .left-container {
   margin: auto;
   font-family: inherit;
+  height: 500px;
 }
 
 .shuffle {
@@ -429,7 +456,7 @@ h5 {
 .home {
   /* margin: 50px; */
   position: fixed;
-  padding: 180px 60px 0px;
+  padding: 130px 60px 0px;
   height: 100vh;
   width: 100vw;
   background-color: #f7da22;
@@ -446,6 +473,32 @@ h5 {
   overflow-x: hidden;
   z-index: 1;
   font-family: "Roboto Slab", serif;
+  @media screen and (max-width: 500px) {
+    padding: 100px 50px 0;
+  }
+}
+.userLogin {
+  margin: 0 auto;
+  display: flex;
+  max-width: 250px;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.userLogin > p {
+  margin: 0;
+}
+
+.color_wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 100%;
+  @media screen and (max-width: 500px) {
+    flex-direction: column;
+    gap: 10px;
+  }
 }
 
 .home button {
@@ -453,12 +506,15 @@ h5 {
   color: rgb(248, 248, 248);
   border-radius: 20px;
   padding: 10px 18px;
-  margin: 38px 10px 10px 10px;
+  margin: 30px 10px 10px;
   border-width: 0px;
   min-width: 140px;
   font-weight: 600;
   font-size: 18px;
   font-family: "Libre Franklin";
+  @media screen and (max-width: 500px) {
+    margin: 20px 10px 10px;
+  }
 }
 
 .home_wrapper {

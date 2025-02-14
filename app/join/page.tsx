@@ -67,7 +67,7 @@ const JoinGameContent = () => {
           colors={availableColors}
         />
       ) : (
-        <div>
+        <div className="join_wrapper">
           {" "}
           <p>Enter the six digit code of the game you want to join</p>
           <input

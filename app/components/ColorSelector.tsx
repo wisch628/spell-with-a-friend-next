@@ -11,7 +11,7 @@ const ColorSelector = ({
   colors: string[];
 }) => {
   return (
-    <div>
+    <div className="color_wrapper">
       <label>And select your color</label>
       <select
         name="color"
