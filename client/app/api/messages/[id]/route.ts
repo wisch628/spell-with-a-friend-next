@@ -74,7 +74,6 @@ export async function POST(
       .emit("new_message", {
        message: `A new message has been sent`,
           messages: messages.rows,
-          type: 'new_message'
       });
 
     return NextResponse.json(

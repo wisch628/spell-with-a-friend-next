@@ -53,7 +53,7 @@ export const LeftContainer = ({
       if (isPangram) {
         toast.info("Pangram!");
       }
-      const data = await callPostRoute(`words/${gameId}`, {
+      const data = await callPostRoute(`/api/words/${gameId}`, {
         color: player?.color,
         word: newWord,
         isPangram,
