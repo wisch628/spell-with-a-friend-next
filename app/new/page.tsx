@@ -1,7 +1,7 @@
 "use client";
 
-import { UserDetailsBody } from "@/components/types";
-import UserDetailsForm from "@/components/UserDetailsForm";
+import { UserDetailsBody } from "@/app/components/types";
+import UserDetailsForm from "@/app/components/UserDetailsForm";
 import { useRouter } from "next/navigation";
 import { callPostRoute } from "../utils";
 

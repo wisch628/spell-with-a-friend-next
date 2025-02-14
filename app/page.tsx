@@ -2,15 +2,14 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import styling from "@/components/home.module.css";
-import { PageWrapper } from "@/components/PageWrapper";
-import { CreateNewGameButton } from "@/components/CreateNewGameButton";
+import { PageWrapper } from "@/app/components/PageWrapper";
+import { CreateNewGameButton } from "@/app/components/CreateNewGameButton";
 
 export default function Home() {
   return (
     <PageWrapper>
       <div>
-        <div className={styling.center}>
+        <div className="center">
           <Image
             src="/images/double-bee.png"
             alt="bee icon"

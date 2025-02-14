@@ -1,6 +1,6 @@
 import { SetStateAction } from "react";
 import { GameUser, WordObject } from "./WordContainer";
-import { Message } from "@/components/ChatBox";
+import { Message } from "@/app/components/ChatBox";
 import { io } from "socket.io-client";
 
 

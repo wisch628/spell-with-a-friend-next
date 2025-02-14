@@ -1,9 +1,8 @@
 import Image from "next/image";
-import styles from "./home.module.css";
 
 export const Header = () => {
   return (
-    <nav className={styles.header}>
+    <nav className="header">
       <div>
         <p>Inspired By</p>
         <Image

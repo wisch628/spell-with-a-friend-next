@@ -1,10 +1,9 @@
 import { ReactElement } from "react";
 import { Header } from "./Header";
-import styling from "./home.module.css";
 
 export const PageWrapper = ({ children }: { children: ReactElement }) => {
   return (
-    <div className={styling.home}>
+    <div className="home">
       <Header />
       {children}
       <footer>
