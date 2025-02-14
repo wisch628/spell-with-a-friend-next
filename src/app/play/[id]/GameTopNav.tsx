@@ -34,14 +34,19 @@ export const GameTopNav = ({
         </h3>
       )}
       <div className="nav_child">
-        {" "}
         <h3>
           Player:{" "}
           <span className={user.color}>{captialize(user.display_name)}</span>
         </h3>
-        <button onClick={() => togglePopUp("invite")}>Invite Friends</button>
+        <button
+          className="thin_border_button"
+          onClick={() => togglePopUp("invite")}
+        >
+          Invite Friends
+        </button>
+
         <Link href="/">
-          <button>X</button>
+          <button className="close">X</button>
         </Link>
       </div>
     </nav>

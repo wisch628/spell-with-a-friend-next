@@ -117,7 +117,7 @@ export const ChatBox = ({
           className="chatbox-input"
         />
         <span className="input-group-btn">
-          <button id="chatButton" className="btn btn-default" type="submit">
+          <button id="chatButton" className="thin_border_button" type="submit">
             Send
           </button>
         </span>

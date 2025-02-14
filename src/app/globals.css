@@ -74,10 +74,15 @@ nav.bottom > button {
   background-color: #f7da22;
   color: #333;
   font-size: 20px;
+  border: 0.5px solid black;
+}
+
+button {
+    cursor: pointer;
 }
 
 .notification {
-  border: 2px solid red;
+  border: 2px solid red!important;
 }
 
 .notification::after {
@@ -85,8 +90,8 @@ nav.bottom > button {
   position: absolute;
   top: -10px;
   left: 385px;
-  width: 25px;
-  height: 25px;
+  width: 22px;
+  height: 22px;
   background-color: red;
   border-radius: 50%;
   border: 1px solid white;
@@ -96,7 +101,20 @@ nav.bottom > button {
 }
 
 nav.top button {
-  height: 30px;
+  background: none;
+  font-size: 16px;
+
+}
+
+.thin_border_button {
+  border-radius: 8px;
+  border: 1px solid #e6e6e6;
+  padding: 6px 10px;
+    background: none;
+}
+
+.close {
+  border: none;
 }
 
 .cell-bottom {
@@ -238,9 +256,10 @@ nav.top button {
 .message > p {
   background-color: rgb(34, 34, 58);
   color: white;
-  border-radius: 50px;
+  border-radius: 20px;
   padding: 10px;
   max-width: 200px;
+  overflow-wrap: break-word;
 }
 
 .my-message {
@@ -252,12 +271,13 @@ nav.top button {
 
 .my-message > p {
   color: white;
-  border-radius: 50px;
+  border-radius: 20px;
   padding: 10px;
   max-width: 200px;
   margin-left: 120px;
   width: auto;
   text-align: left;
+  overflow-wrap: break-word;
 }
 
 #new-message-form {
@@ -322,7 +342,6 @@ nav.top button {
 
 .close:hover {
   color: #f7da22;
-  cursor: pointer;
 }
 
 .nav_child {
@@ -333,6 +352,7 @@ nav.top button {
   width: 60%;
   max-width: 270px;
   font-family: inherit;
+  font-weight: 300px;
   @media screen and (max-width: 540px) {
     max-width: 100%;
     width: 100%;
@@ -346,6 +366,7 @@ h3,
 .left-container,
 h5 {
   font-family: inherit;
+  font-weight: inherit
 }
 
 .word-container {
@@ -369,8 +390,7 @@ h5 {
 }
 
 .shuffle {
-  margin: 7px 0 7px 138px;
-  cursor: pointer;
+  margin: 7px 0 7px 14px;
 }
 
 .chatbox-input {
