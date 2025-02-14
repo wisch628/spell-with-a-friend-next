@@ -2,7 +2,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { GameUser } from "./WordContainer";
 import { PopUp } from "./types";
-import { captialize } from "@/app/utils";
+import { captialize } from "../../utils";
 
 export const GameTopNav = ({
   displayWeekday,

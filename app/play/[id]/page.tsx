@@ -6,7 +6,7 @@ import { GameUser, WordContainer, WordObject } from "./WordContainer";
 import { GameData, PopUp } from "./types";
 import { GameTopNav } from "./GameTopNav";
 import { useParams } from "next/navigation";
-import { captialize } from "@/app/utils";
+import { captialize } from "../../utils";
 import { calculateScores, setupSockets } from "./utils";
 import { toast, ToastContainer } from "react-toastify";
 import { EMPTY_GAME_DATA, INVITE_FRIEND_ROUTE } from "./consts";

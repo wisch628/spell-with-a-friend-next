@@ -6,8 +6,8 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { GameUser } from "@/app/play/[id]/WordContainer";
-import { callPostRoute } from "@/app/utils";
+import { GameUser } from "../play/[id]/WordContainer";
+import { callPostRoute } from "../utils";
 import { useParams } from "next/navigation";
 
 export interface Message {

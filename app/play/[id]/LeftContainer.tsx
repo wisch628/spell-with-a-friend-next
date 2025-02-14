@@ -8,7 +8,7 @@ import {
   useState,
 } from "react";
 import { pangramCheck, wordErrorCheck } from "./utils";
-import { callPostRoute } from "@/app/utils";
+import { callPostRoute } from "../../utils";
 import { toast } from "react-toastify";
 import { useParams } from "next/navigation";
 import { GameData } from "./types";

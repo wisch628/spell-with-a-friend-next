@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { captialize } from "@/app/utils";
+import { captialize } from "../utils";
 
 const ColorSelector = ({
   color,

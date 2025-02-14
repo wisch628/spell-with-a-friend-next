@@ -1,4 +1,4 @@
-import { INVITE_FRIEND_ROUTE } from "@/app/play/[id]/consts";
+import { INVITE_FRIEND_ROUTE } from "../play/[id]/consts";
 import Link from "next/link";
 import { ForwardedRef, forwardRef } from "react";
 
