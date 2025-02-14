@@ -52,7 +52,7 @@ export const ChatBox = ({
 
   const sendMessage = async (event?: React.FormEvent) => {
     event?.preventDefault();
-    await callPostRoute(`messages/${gameId}`, {
+    await callPostRoute(`/api/messages/${gameId}`, {
       color: currentPlayer?.color,
       content: currentMessage,
     });
