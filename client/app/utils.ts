@@ -15,7 +15,8 @@ export const captialize = (word: string) => {
 };
 
 export const getBackendUrl = (isWebsocket: boolean = false) => {
-  const isProd = process.env.NODE_ENV == "production";
+  const isProd = process.env.NODE_ENV !== "production";
   const port = isWebsocket ? 8001 : 8000;
+  console.log({isWebsocket})
   return isProd ? `18.119.126.107:${port}` : `localhost:${port}`;
 };

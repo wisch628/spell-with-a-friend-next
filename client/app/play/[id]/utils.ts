@@ -1,7 +1,7 @@
 import { SetStateAction } from "react";
 import { GameUser, WordObject } from "./WordContainer";
 import { Message } from "@/components/ChatBox";
-import { getBackendUrl } from "@/app/utils";
+import { io } from "socket.io-client";
 
 
 
@@ -31,28 +31,36 @@ export const pangramCheck = ({newWord, pangrams}: {newWord: string, pangrams: st
 }
 
 export const setupSockets = (gameId: string, setFoundWords: (value: SetStateAction<WordObject[]> ) => void, setMessages: (messages: Message[]) => void, newUserJoined: (users: GameUser[], message: string) => void) => {
-      const socket = new WebSocket(`ws://${getBackendUrl(true)}/words/${gameId}`);
-  
-      socket.onopen = () => {
+      const socket = io();
+      socket.on('connect', () => {
         console.log("WebSocket connection established");
-      };
+        socket.emit("joinGame", gameId);
+
+      })
+      socket.on('joinedRoom', (message) => {
+        console.log({message})
+      })
+
+       socket.on('game_loaded', () => {
+        console.log('a socket came through')
+      })
+
+      socket.on('new_word', (event) => {
+          setFoundWords(event.words);
+      })
+
+        socket.on('new_message', (event) => {
+          setMessages(event.messages);
+      })
+
+        socket.on('new_user', (event) => {
+          newUserJoined(event.users, event.message);
+      })
   
-      socket.onmessage = (event) => {
-        const json = JSON.parse(event.data);
-        if (json.type === "new_word") {
-          setFoundWords(json.words);
-        }
-        if (json.type === "new_message") {
-          setMessages(json.messages);
-        }
-        if (json.type === "new_user") {
-          newUserJoined(json.users, json.message);
-        } 
-      };
   
-      socket.onerror = (error) => {
+      socket.on('error', (error) => {
         console.error("WebSocket error: ", error);
-      };
+      })
   
       // Cleanup on component unmount
       return () => {
