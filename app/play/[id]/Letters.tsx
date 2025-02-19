@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Hexagon } from "./Hexagon";
 import { GameData } from "./types";
 import Image from "next/image";
 
@@ -13,11 +12,11 @@ export const Letters = ({
   onClickLetter: (letter: string) => void;
 }) => {
   const [outside, setOutside] = useState<string[]>([]);
+  const centerLetter = gameData.centerLetter.toUpperCase();
 
   useEffect(() => {
     setOutside(gameData.outerLetters.map((letter) => letter.toUpperCase()));
   }, [gameData.outerLetters]);
-  const letterClick = () => {};
 
   const shuffleLetters = () => {
     setOutside((prev) => [...prev].sort(() => Math.random() - 0.5));
@@ -33,47 +32,50 @@ export const Letters = ({
         width={30}
         className="shuffle"
       />
-      <div className="game-container" onClick={letterClick}>
-        <div className="game-wrapper">
-          <Hexagon
-            onClick={onClickLetter}
-            letter={outside[0]}
-            className={["hex", "odd"].join(" ")}
-          />
-          <Hexagon
-            onClick={onClickLetter}
-            letter={outside[1]}
-            className="hex"
-          />
-          <Hexagon
-            onClick={onClickLetter}
-            letter={outside[2]}
-            className={["hex", "odd"].join(" ")}
-          />
-        </div>
-        <div className="game-wrapper">
-          <Hexagon
-            onClick={onClickLetter}
-            letter={outside[3]}
-            className={["hex", "odd"].join(" ")}
-          />
-          <Hexagon
-            onClick={onClickLetter}
-            letter={gameData.centerLetter.toUpperCase()}
-            className={["hex", "center"].join(" ")}
-          />
-          <Hexagon
-            onClick={onClickLetter}
-            letter={outside[4]}
-            className={["hex", "odd"].join(" ")}
-          />
-        </div>
-        <div className={["game-wrapper", "special"].join(" ")}>
-          <Hexagon
-            onClick={onClickLetter}
-            letter={outside[5]}
-            className="hex"
-          />
+      <div className="game-container">
+        <div>
+          <div
+            className="hexagon top-row"
+            onClick={() => onClickLetter(outside[0])}
+          >
+            {outside[0]}
+          </div>
+          <div
+            className="hexagon left-top"
+            onClick={() => onClickLetter(outside[1])}
+          >
+            {outside[1]}
+          </div>
+          <div
+            className="hexagon left-bottom"
+            onClick={() => onClickLetter(outside[2])}
+          >
+            {outside[2]}
+          </div>
+          <div
+            className="hexagon center"
+            onClick={() => onClickLetter(centerLetter)}
+          >
+            {centerLetter}
+          </div>
+          <div
+            className="hexagon right-top"
+            onClick={() => onClickLetter(outside[3])}
+          >
+            {outside[3]}
+          </div>
+          <div
+            className="hexagon right-bottom"
+            onClick={() => onClickLetter(outside[4])}
+          >
+            {outside[4]}
+          </div>
+          <div
+            className="hexagon bottom-row"
+            onClick={() => onClickLetter(outside[5])}
+          >
+            {outside[5]}
+          </div>
         </div>
       </div>
     </div>

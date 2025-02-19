@@ -1,90 +1,31 @@
 import { Letters } from "./Letters";
-import {
-  Dispatch,
-  KeyboardEventHandler,
-  RefObject,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
-import { pangramCheck, wordErrorCheck } from "./utils";
-import { callPostRoute } from "../../utils";
-import { toast } from "react-toastify";
-import { useParams } from "next/navigation";
+import { Dispatch, SetStateAction } from "react";
+
 import { GameData } from "./types";
 import { GameUser, WordObject } from "./WordContainer";
+import { WordInput } from "../WordInput";
 
 export const LeftContainer = ({
   gameData,
-  foundWords,
-  setFoundWords,
-  player,
-  inputRef,
-  typingEnabled,
+  currentWord,
+  setCurrentWord,
 }: {
   gameData: GameData;
   foundWords: WordObject[];
   setFoundWords: Dispatch<SetStateAction<WordObject[]>>;
+  setCurrentWord: Dispatch<SetStateAction<string>>;
+
   player: GameUser;
-  inputRef: RefObject<HTMLInputElement | null>;
-  typingEnabled: boolean;
+  currentWord: string;
 }) => {
-  const [currentWord, setCurrentWord] = useState("");
-  const params = useParams();
-  const gameId = params.id;
+  const { centerLetter, outerLetters } = gameData;
 
-  const submitWord: KeyboardEventHandler<HTMLInputElement> = async (e) => {
-    if (e.key === "Enter") {
-      const { centerLetter, outerLetters, pangrams, answers } = gameData;
-      const newWord = currentWord.toLowerCase();
-      const errorMessage = wordErrorCheck({
-        newWord,
-        foundWords,
-        centerLetter,
-        outerLetters,
-        answers,
-      });
-      if (errorMessage) {
-        toast.error(errorMessage);
-        setCurrentWord("");
-        return;
-      }
-      const isPangram = pangramCheck({ newWord, pangrams });
-      if (isPangram) {
-        toast.info("Pangram!");
-      }
-      const data = await callPostRoute(`/api/words/${gameId}`, {
-        color: player?.color,
-        word: newWord,
-        isPangram,
-      });
-      setFoundWords(data.words);
-      setCurrentWord("");
-    }
-  };
-  const typeWord: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    e.preventDefault();
-    setCurrentWord(e?.target?.value);
-  };
-
-  useEffect(() => {
-    if (typingEnabled) {
-      inputRef?.current?.focus();
-    } else {
-      inputRef?.current?.blur();
-    }
-  }, [gameData, currentWord, inputRef, typingEnabled]);
   return (
     <div className="left-container">
-      <input
-        ref={inputRef}
-        placeholder="Type Your Word"
-        name="currentWord"
-        id="wordField"
-        type="text"
-        value={currentWord}
-        onChange={typeWord}
-        onKeyUp={submitWord}
+      <WordInput
+        letters={outerLetters}
+        centerLetter={centerLetter}
+        word={currentWord.toUpperCase()}
       />
       <Letters
         gameData={gameData}

@@ -71,6 +71,53 @@ input {
   caret-color: transparent;
 }
 
+.word_input {
+  font-size: xx-large;
+  color: #959595;
+  width: 320px;
+  overflow-x: scroll;
+  height: 40px;
+}
+
+.empty::before {
+  content: "";
+  position: absolute;
+  width: 2px;
+  height: 1.25em;
+  background: #f7da21;
+  animation: 1000ms blink step-end infinite;
+}
+
+.cursor {
+  content: "";
+  width: 2px;
+  height: 1.25em;
+  background: #f7da21;
+  animation: 1000ms blink step-end infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.hasLetters {
+  display: flex;
+  gap: 2px;
+  color: #dcdcdc;
+  font-weight: 700;
+  justify-content: center;
+}
+
+.center_letter {
+  color: #f7da21;
+}
+
+.outer_letters {
+  color: black;
+}
+
 nav.bottom {
   bottom: 0;
   color: white;
@@ -128,63 +175,15 @@ nav.top button {
   border: none;
 }
 
-.cell-bottom {
-  float: left;
-  border-left: 30px solid #e6e6e6;
-  border-top: 52px solid transparent;
-  border-bottom: 52px solid transparent;
-}
-
-.cell-top {
-  float: left;
-  border-right: 30px solid #e6e6e6;
-  border-top: 52px solid transparent;
-  border-bottom: 52px solid transparent;
-}
-
-.cell-center {
-  float: left;
-  width: 60px;
-  height: 104px;
-  background-color: #e6e6e6;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.hex {
-  float: left;
-  margin-right: -26px;
-  margin-bottom: -50px;
-}
-
-.hex.odd {
-  margin-top: 53px;
-}
-
-.game-wrapper {
-  width: 290px;
-  font-weight: 600;
-}
-
 .game-container {
-  margin-left: -20px;
-}
-
-.center .cell-center {
-  background-color: #f7da22;
-}
-
-.center .cell-top {
-  border-right: 30px solid #f7da22;
-}
-
-.center .cell-bottom {
-  border-left: 30px solid #f7da22;
-}
-
-.special {
-  padding-left: 93.5px;
+    display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 5px 0;
+      /* Adjust vertical spacing */
+      position: relative;
+      margin-left: 30px;
 }
 
 .word-wrapper {
@@ -196,17 +195,16 @@ nav.top button {
 
 .flex {
   display: flex;
-  flex-direction: row-reverse;
   flex-wrap: wrap;
   margin: 70px auto 0;
   justify-content: space-between;
-  padding-top: 50px;
-  max-width: 900px;
+  padding: 50px 20px 0;
+  max-width: 1000px;
   column-gap: 50px;
   row-gap: 30px;
   overflow-x: hidden;
   @media screen and (max-width: 540px) {
-    padding-top: 10px;
+    padding-top: 30px;
   }
 }
 
@@ -421,8 +419,7 @@ h5 {
 .left-container {
   margin: auto;
   font-family: inherit;
-  height: 500px;
-  padding-left: 20px;
+  height: 370px;
 }
 
 .shuffle {
@@ -531,4 +528,56 @@ h5 {
   align-items: center;
   text-align: center;
   gap: 26px;
+}
+
+.hexagon {
+  width: 100px;
+  height: 85px;
+  /* Controls vertical height */
+  background-color: #e5e5e5;
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: black;
+  position: absolute;
+  cursor: pointer;
+}
+
+.center {
+  background-color: #f7da21;
+  top: 90px;
+  left: 80px;
+}
+
+.top-row {
+  top: 0;
+  left: 80px;
+}
+
+.bottom-row {
+  top: 180px;
+  left: 80px;
+}
+
+.left-top {
+  top: 45px;
+  left: 0px;
+}
+
+.left-bottom {
+  top: 135px;
+  left: 0px;
+}
+
+.right-top {
+  top: 45px;
+  left: 160px;
+}
+
+.right-bottom {
+  top: 135px;
+  left: 160px;
 }

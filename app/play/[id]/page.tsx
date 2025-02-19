@@ -6,8 +6,13 @@ import { GameUser, WordContainer, WordObject } from "./WordContainer";
 import { GameData, PopUp } from "./types";
 import { GameTopNav } from "./GameTopNav";
 import { useParams } from "next/navigation";
-import { captialize } from "../../utils";
-import { calculateScores, setupSockets } from "./utils";
+import { callPostRoute, captialize } from "../../utils";
+import {
+  calculateScores,
+  pangramCheck,
+  setupSockets,
+  wordErrorCheck,
+} from "./utils";
 import { toast, ToastContainer } from "react-toastify";
 import { EMPTY_GAME_DATA, INVITE_FRIEND_ROUTE } from "./consts";
 import { useRouter } from "next/navigation";
@@ -24,6 +29,7 @@ const Play = () => {
   const [popup, setPopup] = useState<PopUp>("");
   const [loading, setLoading] = useState(true);
   const [notifications, setNotifications] = useState(0);
+  const [currentWord, setCurrentWord] = useState("");
   const params = useParams();
   const router = useRouter();
   const teamPopupRef = useRef<HTMLInputElement>(null);
@@ -93,11 +99,50 @@ const Play = () => {
       .catch((error) => console.error("Error:", error));
   }, [gameId]);
 
+  const submitWord = useCallback(async () => {
+    const { centerLetter, outerLetters, pangrams, answers } = gameData;
+    const newWord = currentWord.toLowerCase();
+
+    const errorMessage = wordErrorCheck({
+      newWord,
+      foundWords,
+      centerLetter,
+      outerLetters,
+      answers,
+    });
+    if (errorMessage) {
+      toast.error(errorMessage);
+      return;
+    }
+    const isPangram = pangramCheck({ newWord, pangrams });
+    if (isPangram) {
+      toast.info("Pangram!");
+    }
+    const data = await callPostRoute(`/api/words/${gameId}`, {
+      color: player?.color,
+      word: newWord,
+      isPangram,
+    });
+    setFoundWords(data.words);
+    setCurrentWord("");
+  }, [currentWord, foundWords, gameData, gameId, player?.color]);
+
   useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
+    const handleTyping = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setPopup("");
         inputRef?.current?.focus();
+        return;
+      }
+      if (popup !== "") return;
+      if (event.key.length === 1 && event.key.match(/[a-zA-Z]/)) {
+        setCurrentWord(currentWord + event.key);
+      }
+      if (event.key === "Backspace") {
+        setCurrentWord(currentWord.slice(0, currentWord.length - 1));
+      }
+      if (event.key === "Enter" && !!currentWord?.length) {
+        submitWord();
       }
     };
     const handleClickOutside = (event: MouseEvent) => {
@@ -110,13 +155,13 @@ const Play = () => {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("keydown", handleEscape);
+    document.addEventListener("keydown", handleTyping);
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("keydown", handleEscape);
+      document.removeEventListener("keydown", handleTyping);
     };
-  }, [popup]);
+  }, [popup, currentWord, submitWord]);
 
   useEffect(() => {
     if (!users.length) return;
@@ -134,7 +179,11 @@ const Play = () => {
     fetch(`/api/today`)
       .then((response) => response.json())
       .then((data) => {
-        setGameData(data);
+        const letters = data.outerLetters.map((letter: string) =>
+          letter.toUpperCase()
+        );
+        const centerLetter = data.centerLetter.toUpperCase();
+        setGameData({ ...data, outerLetters: letters, centerLetter });
       })
       .catch((error) => console.error("Error:", error));
   }, []);
@@ -196,6 +245,14 @@ const Play = () => {
           </button>
         </nav>
         <div className="flex">
+          <LeftContainer
+            setCurrentWord={setCurrentWord}
+            gameData={gameData}
+            player={player as GameUser}
+            setFoundWords={setFoundWords}
+            foundWords={foundWords}
+            currentWord={currentWord}
+          />
           <div className="right-container">
             <div className="score">
               {Object.keys(score).map((id) => {
@@ -210,14 +267,6 @@ const Play = () => {
             </div>
             <WordContainer correctWords={foundWords} />
           </div>
-          <LeftContainer
-            inputRef={inputRef}
-            typingEnabled={popup === ""}
-            gameData={gameData}
-            player={player as GameUser}
-            setFoundWords={setFoundWords}
-            foundWords={foundWords}
-          />
 
           {popup === "chat" && (
             <ChatBox

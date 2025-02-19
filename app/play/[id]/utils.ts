@@ -17,12 +17,12 @@ export const wordErrorCheck = ({
   outerLetters: string[];
 }) => {
   const string = centerLetter + outerLetters.join("");
-  const regex = new RegExp(`^[${string}]*$`);
+  const regex = new RegExp(`^[${string}]*$`, "i");
   if (newWord.length <= 3) {
     return "Too Short!";
   } else if (regex.test(newWord) === false) {
     return "Bad Letters!";
-  } else if (newWord.includes(centerLetter) === false) {
+  } else if (newWord.includes(centerLetter.toLowerCase()) === false) {
     return "Missing center letter!";
   } else if (answers.indexOf(newWord) === -1) {
     return "Not in word list!!";
