@@ -15,8 +15,8 @@ export const GameButtons = ({
   };
   return (
     <div className="button_wrapper">
-      <button className="thin_border_button" onClick={submitWord}>
-        Enter
+      <button className="thin_border_button" onClick={deleteLetter}>
+        Delete
       </button>
       <Image
         onClick={shuffleLetters}
@@ -26,8 +26,8 @@ export const GameButtons = ({
         width={30}
         className="shuffle"
       />
-      <button className="thin_border_button" onClick={deleteLetter}>
-        Delete
+      <button className="thin_border_button" onClick={submitWord}>
+        Enter
       </button>
     </div>
   );

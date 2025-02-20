@@ -87,6 +87,7 @@ const Play = () => {
   }, [gameId]);
 
   const submitWord = useCallback(async () => {
+    if (!currentWord.length) return;
     const { centerLetter, outerLetters, pangrams, answers } = gameData;
     const newWord = currentWord.toLowerCase();
 

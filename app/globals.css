@@ -170,6 +170,7 @@ nav.top button {
   padding: 6px 10px;
   background: none;
   font-size: 18px;
+  min-width: 90px;
 }
 
 .close {
@@ -177,15 +178,15 @@ nav.top button {
 }
 
 .game-container {
-    display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      gap: 5px 0;
-      /* Adjust vertical spacing */
-      position: relative;
-      margin-left: 30px;
-      min-height: 270px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 5px 0;
+  position: relative;
+  margin: auto;
+  height: 265px;
+  width: 260px;
 }
 
 .word-wrapper {
@@ -586,8 +587,8 @@ h5 {
 }
 
 .button_wrapper {
-    gap: 10px;
-      display: flex;
-      justify-content: center;
-      margin: 20px auto;
+  gap: 10px;
+  display: flex;
+  justify-content: center;
+  margin: 20px auto;
 }
