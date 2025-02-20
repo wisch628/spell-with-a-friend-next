@@ -1,56 +1,40 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { GameData } from "./types";
-import Image from "next/image";
 
 export const Letters = ({
   gameData,
   onClickLetter,
+  outsideLetters,
 }: {
   gameData: GameData;
+  outsideLetters: string[];
   onClickLetter: (letter: string) => void;
 }) => {
-  const [outside, setOutside] = useState<string[]>([]);
   const centerLetter = gameData.centerLetter.toUpperCase();
-
-  useEffect(() => {
-    setOutside(gameData.outerLetters.map((letter) => letter.toUpperCase()));
-  }, [gameData.outerLetters]);
-
-  const shuffleLetters = () => {
-    setOutside((prev) => [...prev].sort(() => Math.random() - 0.5));
-  };
 
   return (
     <div>
-      <Image
-        onClick={shuffleLetters}
-        src="/images/shuffle.png"
-        alt="shuffle"
-        height={30}
-        width={30}
-        className="shuffle"
-      />
       <div className="game-container">
         <div>
           <div
             className="hexagon top-row"
-            onClick={() => onClickLetter(outside[0])}
+            onClick={() => onClickLetter(outsideLetters[0])}
           >
-            {outside[0]}
+            {outsideLetters[0]}
           </div>
           <div
             className="hexagon left-top"
-            onClick={() => onClickLetter(outside[1])}
+            onClick={() => onClickLetter(outsideLetters[1])}
           >
-            {outside[1]}
+            {outsideLetters[1]}
           </div>
           <div
             className="hexagon left-bottom"
-            onClick={() => onClickLetter(outside[2])}
+            onClick={() => onClickLetter(outsideLetters[2])}
           >
-            {outside[2]}
+            {outsideLetters[2]}
           </div>
           <div
             className="hexagon center"
@@ -60,21 +44,21 @@ export const Letters = ({
           </div>
           <div
             className="hexagon right-top"
-            onClick={() => onClickLetter(outside[3])}
+            onClick={() => onClickLetter(outsideLetters[3])}
           >
-            {outside[3]}
+            {outsideLetters[3]}
           </div>
           <div
             className="hexagon right-bottom"
-            onClick={() => onClickLetter(outside[4])}
+            onClick={() => onClickLetter(outsideLetters[4])}
           >
-            {outside[4]}
+            {outsideLetters[4]}
           </div>
           <div
             className="hexagon bottom-row"
-            onClick={() => onClickLetter(outside[5])}
+            onClick={() => onClickLetter(outsideLetters[5])}
           >
-            {outside[5]}
+            {outsideLetters[5]}
           </div>
         </div>
       </div>

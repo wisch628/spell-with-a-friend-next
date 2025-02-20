@@ -1,24 +1,28 @@
 import { Letters } from "./Letters";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import { GameData } from "./types";
-import { GameUser, WordObject } from "./WordContainer";
 import { WordInput } from "../WordInput";
+import { GameButtons } from "../GameButtons";
 
 export const LeftContainer = ({
   gameData,
   currentWord,
   setCurrentWord,
+  deleteLetter,
+  submitWord,
 }: {
   gameData: GameData;
-  foundWords: WordObject[];
-  setFoundWords: Dispatch<SetStateAction<WordObject[]>>;
-  setCurrentWord: Dispatch<SetStateAction<string>>;
-
-  player: GameUser;
   currentWord: string;
+  setCurrentWord: Dispatch<SetStateAction<string>>;
+  deleteLetter: () => void;
+  submitWord: () => Promise<void>;
 }) => {
+  const [outside, setOutside] = useState<string[]>([]);
   const { centerLetter, outerLetters } = gameData;
+  useEffect(() => {
+    setOutside(gameData.outerLetters.map((letter) => letter.toUpperCase()));
+  }, [gameData.outerLetters]);
 
   return (
     <div className="left-container">
@@ -30,6 +34,12 @@ export const LeftContainer = ({
       <Letters
         gameData={gameData}
         onClickLetter={(letter: string) => setCurrentWord(currentWord + letter)}
+        outsideLetters={outside}
+      />
+      <GameButtons
+        setOutside={setOutside}
+        deleteLetter={deleteLetter}
+        submitWord={submitWord}
       />
     </div>
   );

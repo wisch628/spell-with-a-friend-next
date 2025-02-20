@@ -1,24 +1,21 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Loading } from "./Loading";
-import { GameUser, WordContainer, WordObject } from "./WordContainer";
+import { GameUser, WordObject } from "./WordContainer";
 import { GameData, PopUp } from "./types";
 import { GameTopNav } from "./GameTopNav";
 import { useParams } from "next/navigation";
-import { callPostRoute, captialize } from "../../utils";
-import {
-  calculateScores,
-  pangramCheck,
-  setupSockets,
-  wordErrorCheck,
-} from "./utils";
+import { callPostRoute } from "../../utils";
+import { pangramCheck, setupSockets, wordErrorCheck } from "./utils";
 import { toast, ToastContainer } from "react-toastify";
 import { EMPTY_GAME_DATA, INVITE_FRIEND_ROUTE } from "./consts";
 import { useRouter } from "next/navigation";
 import { LeftContainer } from "./LeftContainer";
 import { ChatBox, Message } from "../../components/ChatBox";
 import { InvitePopUp } from "../../components/InvitePopup";
+import { RightContainer } from "./RightContainer";
+import { BottomNav } from "./BottomNav";
 
 const Play = () => {
   const [gameData, setGameData] = useState<GameData>(EMPTY_GAME_DATA);
@@ -36,16 +33,6 @@ const Play = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const gameId = params.id as string;
-
-  const [colorToUser, scores] = useMemo(() => {
-    const colorToUser: Record<string, string> = {};
-    const scores = users.reduce((acc, { color, display_name }) => {
-      acc[color] = 0;
-      colorToUser[color] = display_name;
-      return acc;
-    }, {} as { [key: string]: number });
-    return [colorToUser, scores];
-  }, [users]);
 
   const prevUsersCount = useRef(users.length);
 
@@ -127,6 +114,9 @@ const Play = () => {
     setCurrentWord("");
   }, [currentWord, foundWords, gameData, gameId, player?.color]);
 
+  const deleteLetter = useCallback(() => {
+    setCurrentWord(currentWord.slice(0, currentWord.length - 1));
+  }, [currentWord]);
   useEffect(() => {
     const handleTyping = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -139,7 +129,7 @@ const Play = () => {
         setCurrentWord(currentWord + event.key);
       }
       if (event.key === "Backspace") {
-        setCurrentWord(currentWord.slice(0, currentWord.length - 1));
+        deleteLetter();
       }
       if (event.key === "Enter" && !!currentWord?.length) {
         submitWord();
@@ -161,7 +151,7 @@ const Play = () => {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleTyping);
     };
-  }, [popup, currentWord, submitWord]);
+  }, [popup, currentWord, submitWord, deleteLetter]);
 
   useEffect(() => {
     if (!users.length) return;
@@ -194,10 +184,6 @@ const Play = () => {
     }
   }, [users, gameData, player]);
 
-  const score = useMemo(() => {
-    return calculateScores(foundWords, scores);
-  }, [foundWords, scores]);
-
   const togglePopUp = (newPopup: PopUp) => {
     if (newPopup == popup) {
       setPopup("");
@@ -229,53 +215,30 @@ const Play = () => {
             togglePopup={() => togglePopUp("invite")}
           />
         )}
+        {popup === "chat" && (
+          <ChatBox
+            users={users}
+            currentPlayer={player as GameUser}
+            messages={messages}
+          />
+        )}
         <GameTopNav
           displayDate={gameData.displayDate}
           displayWeekday={gameData.displayWeekday}
           user={player as GameUser}
           togglePopUp={togglePopUp}
         />
-        <nav className="bottom">
-          <button
-            className={notifications > 0 ? "notification" : ""}
-            onClick={() => togglePopUp("chat")}
-            data-count={notifications}
-          >
-            Chat Box
-          </button>
-        </nav>
         <div className="flex">
           <LeftContainer
             setCurrentWord={setCurrentWord}
             gameData={gameData}
-            player={player as GameUser}
-            setFoundWords={setFoundWords}
-            foundWords={foundWords}
             currentWord={currentWord}
+            deleteLetter={deleteLetter}
+            submitWord={submitWord}
           />
-          <div className="right-container">
-            <div className="score">
-              {Object.keys(score).map((id) => {
-                return (
-                  <p className={[id].join(" ")} key={id}>
-                    {`${captialize(id == "total" ? id : colorToUser[id])}: ${
-                      score[id]
-                    }`}
-                  </p>
-                );
-              })}
-            </div>
-            <WordContainer correctWords={foundWords} />
-          </div>
-
-          {popup === "chat" && (
-            <ChatBox
-              users={users}
-              currentPlayer={player as GameUser}
-              messages={messages}
-            />
-          )}
+          <RightContainer foundWords={foundWords} users={users} />
         </div>
+        <BottomNav notifications={notifications} togglePopUp={togglePopUp} />
       </div>
     );
   }

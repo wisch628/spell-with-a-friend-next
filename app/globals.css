@@ -77,6 +77,7 @@ input {
   width: 320px;
   overflow-x: scroll;
   height: 40px;
+  margin-bottom: 20px;
 }
 
 .empty::before {
@@ -184,6 +185,7 @@ nav.top button {
       /* Adjust vertical spacing */
       position: relative;
       margin-left: 30px;
+      min-height: 270px;
 }
 
 .word-wrapper {
@@ -203,8 +205,10 @@ nav.top button {
   column-gap: 50px;
   row-gap: 30px;
   overflow-x: hidden;
+  align-items: center;
   @media screen and (max-width: 540px) {
     padding-top: 30px;
+    margin-bottom: 60px;
   }
 }
 
@@ -404,7 +408,7 @@ h5 {
 .word-container {
   min-width: 300px;
   width: 100%;
-  max-width: 430px;
+  max-width: 440px;
   display: flex;
   flex-wrap: wrap;
   margin-top: 40px;
@@ -419,7 +423,6 @@ h5 {
 .left-container {
   margin: auto;
   font-family: inherit;
-  height: 370px;
 }
 
 .shuffle {
@@ -580,4 +583,11 @@ h5 {
 .right-bottom {
   top: 135px;
   left: 160px;
+}
+
+.button_wrapper {
+    gap: 10px;
+      display: flex;
+      justify-content: center;
+      margin: 20px auto;
 }
