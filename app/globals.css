@@ -199,16 +199,17 @@ nav.top button {
 .flex {
   display: flex;
   flex-wrap: wrap;
+  flex-direction: row-reverse;
   margin: 70px auto 0;
   justify-content: space-between;
   padding: 50px 20px 0;
   max-width: 1000px;
   column-gap: 50px;
-  row-gap: 30px;
+  row-gap: 50px;
   overflow-x: hidden;
   align-items: center;
   @media screen and (max-width: 540px) {
-    padding-top: 30px;
+    padding-top: 20px;
     margin-bottom: 60px;
   }
 }
@@ -590,5 +591,5 @@ h5 {
   gap: 10px;
   display: flex;
   justify-content: center;
-  margin: 20px auto;
+  margin: 30px auto;
 }

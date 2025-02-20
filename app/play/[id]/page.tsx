@@ -230,6 +230,7 @@ const Play = () => {
           togglePopUp={togglePopUp}
         />
         <div className="flex">
+          <RightContainer foundWords={foundWords} users={users} />
           <LeftContainer
             setCurrentWord={setCurrentWord}
             gameData={gameData}
@@ -237,7 +238,6 @@ const Play = () => {
             deleteLetter={deleteLetter}
             submitWord={submitWord}
           />
-          <RightContainer foundWords={foundWords} users={users} />
         </div>
         <BottomNav notifications={notifications} togglePopUp={togglePopUp} />
       </div>
