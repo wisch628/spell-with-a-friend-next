@@ -6,11 +6,6 @@ export interface WordObject {
   points: number;
 }
 
-export interface GameUser {
-  color: string;
-  display_name: string;
-}
-
 export const WordContainer = ({
   correctWords,
 }: {

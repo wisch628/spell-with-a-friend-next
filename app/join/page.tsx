@@ -8,6 +8,7 @@ import { UserDetailsBody } from "../components/types";
 import { defaultColors } from "../components/constants";
 import { CreateNewGameButton } from "../components/CreateNewGameButton";
 import UserDetailsForm from "../components/UserDetailsForm";
+import { toast } from "react-toastify";
 
 const JoinGameContent = () => {
   const [gameLoaded, setGameLoaded] = useState(false);
@@ -26,6 +27,11 @@ const JoinGameContent = () => {
       fetch(`/api/game/${gameCode}`)
         .then((response) => response.json())
         .then((response) => {
+          if (response?.status !== 200) {
+            console.error(response.error);
+            toast.error(response.error);
+            return;
+          }
           const usedColors = response.users.map(
             ({ color }: { color: string }) => color
           );
@@ -34,15 +40,23 @@ const JoinGameContent = () => {
           );
           setGameLoaded(true);
         })
-        .catch((error) => console.error("Error:", error));
+        .catch((error) => {
+          console.error("Error:", error);
+          setGameLoaded(false);
+        });
     }
   };
 
   const goToGame = async ({ displayName, color }: UserDetailsBody) => {
-    await callPostRoute(`/api/game/${gameCode}`, {
+    const result = await callPostRoute(`/api/game/${gameCode}`, {
       display_name: displayName,
       color,
     });
+    if (result.status !== 201) {
+      toast.error(result.error);
+      console.error(result);
+      return;
+    }
     // Change the URL to the game page with the game code
     localStorage.setItem(gameCode, displayName);
     router.push(`/play/${gameCode}`);
@@ -77,7 +91,9 @@ const JoinGameContent = () => {
             value={gameCode}
             onChange={(e) => setGameCode(e.target.value)}
           />
-          <button onClick={getGame}>Join Game</button>
+          <button className="home_button" onClick={getGame}>
+            Join Game
+          </button>
         </div>
       )}
     </PageWrapper>

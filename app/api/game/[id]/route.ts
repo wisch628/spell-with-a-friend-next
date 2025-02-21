@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import db from "../../../../db";
 import { addUser, selectGameUsers } from "../utils";
+import { GameUser } from "../../../types";
 
 export async function GET(
   request: Request,
@@ -12,7 +13,13 @@ export async function GET(
     // Begin transaction
     await db.query("BEGIN");
 
-    // Insert the new game into the games table
+  const games = await db.query(
+        "SELECT 1 FROM games WHERE game_code = $1",
+        [gameCode]
+      );
+      if (games.rows.length === 0) {
+        return NextResponse.json({ status: 400, error: "Sorry, that game code does not exist" });
+      }
 
     const selectGameWords = `
       SELECT color, word, points
@@ -23,12 +30,14 @@ export async function GET(
     const users = await db.query(selectGameUsers, [gameCode]);
     const words = await db.query(selectGameWords, [gameCode]);
 
+
     // Respond with the new game details
     return NextResponse.json(
       {
         message: "Game fetched successfully",
         users: users.rows,
         words: words.rows,
+        status: 200,
       },
       {}
     );
@@ -47,15 +56,22 @@ export async function POST(
   const gameCode = (await params).id;
   const body = await request.json();
   const { color, display_name } = body;
-  if (!display_name || !color || !gameCode) {
+  const newUser = display_name.toLowerCase()
+  if (!newUser || !color || !gameCode) {
     return NextResponse.json(
-      { error: "display_name, color, and gameCode are required" },
-      { status: 400 }
+      { error: "Display name, color, and game code are required", status: 400 },
     );
   }
 
   try {
-    await addUser(display_name, color, gameCode);
+    const initialUsers = await db.query(selectGameUsers, [gameCode]);
+    const usernameTaken = initialUsers.rows.filter((user: GameUser) => user.display_name.toLowerCase() === newUser).length !== 0
+    if (usernameTaken) {
+         return NextResponse.json(
+      { error: `The username "${newUser}" is already taken. Please try a new name.`, status: 500 },
+    );
+    }
+    await addUser(newUser, color, gameCode);
     const users = await db.query(selectGameUsers, [gameCode]);
     // @ts-expect-error global mistyped
     global.io.to(gameCode).emit("new_user", {users: users.rows, message: `${display_name} joined the game`});
@@ -63,9 +79,9 @@ export async function POST(
     return NextResponse.json(
       {
         message: "User created successfully",
-        game: { gameCode, created_at: new Date(), display_name, color },
+        game: { gameCode, created_at: new Date(), display_name: newUser, color },
+        status: 201
       },
-      { status: 201 }
     );
   } catch (error) {
     // Rollback in case of error

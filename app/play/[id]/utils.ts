@@ -1,7 +1,8 @@
 import { SetStateAction } from "react";
-import { GameUser, WordObject } from "./WordContainer";
+import { WordObject } from "./WordContainer";
 import { io } from "socket.io-client";
 import { Message } from "../../components/ChatBox";
+import { GameUser } from "../../types";
 
 export const wordErrorCheck = ({
   foundWords,

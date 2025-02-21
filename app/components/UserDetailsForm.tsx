@@ -37,7 +37,10 @@ const UserDetailsForm = ({
           onKeyUp={pressEnter}
         />
         <ColorSelector color={color} setColor={setColor} colors={colors} />
-        <button onClick={() => onClick({ displayName, color })}>
+        <button
+          className="home_button"
+          onClick={() => onClick({ displayName, color })}
+        >
           {newGame ? "Create a New Game" : "Join Game"}
         </button>
       </div>

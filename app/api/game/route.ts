@@ -8,8 +8,7 @@ export async function POST(request: Request) {
   const { color, display_name } = body;
   if (!display_name || !color) {
     return NextResponse.json(
-      { error: "display_name and color are required" },
-      { status: 400 }
+      { error: "Display name and color are required", status: 400 },
     );
   }
 
@@ -42,8 +41,8 @@ export async function POST(request: Request) {
       {
         message: "Game created successfully",
         game: { gameCode, created_at: new Date(), display_name, color },
-      },
-      { status: 201 }
+        status: 201
+      }
     );
   } catch (error) {
     // Rollback in case of error

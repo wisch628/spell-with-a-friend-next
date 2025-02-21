@@ -16,7 +16,7 @@ export default function Home() {
           <div>
             <CreateNewGameButton />
             <Link href="/join">
-              <button>Join an Active Game</button>
+              <button className="home_button">Join an Active Game</button>
             </Link>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { GameUser } from "./WordContainer";
+import { GameUser } from "../../types";
 import { PopUp } from "./types";
 import { captialize } from "../../utils";
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { GameUser } from "../play/[id]/WordContainer";
+import { GameUser } from "../types";
 import { callPostRoute } from "../utils";
 import { useParams } from "next/navigation";
 

@@ -1,7 +1,8 @@
 import { captialize } from "@/app/utils";
-import { GameUser, WordContainer, WordObject } from "./WordContainer";
+import { WordContainer, WordObject } from "./WordContainer";
 import { calculateScores } from "./utils";
 import { useMemo } from "react";
+import { GameUser } from "../../types";
 
 export const RightContainer = ({
   users,

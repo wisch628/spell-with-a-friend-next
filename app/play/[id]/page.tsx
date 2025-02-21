@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Loading } from "./Loading";
-import { GameUser, WordObject } from "./WordContainer";
+import { WordObject } from "./WordContainer";
 import { GameData, PopUp } from "./types";
 import { GameTopNav } from "./GameTopNav";
 import { useParams } from "next/navigation";
@@ -16,6 +16,7 @@ import { ChatBox, Message } from "../../components/ChatBox";
 import { InvitePopUp } from "../../components/InvitePopup";
 import { RightContainer } from "./RightContainer";
 import { BottomNav } from "./BottomNav";
+import { GameUser } from "../../types";
 
 const Play = () => {
   const [gameData, setGameData] = useState<GameData>(EMPTY_GAME_DATA);
