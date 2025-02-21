@@ -9,20 +9,18 @@ export default function Home() {
   return (
     <PageWrapper>
       <div>
+        <BeeAnimation />
         <div className="home_wrapper">
+          <h1>Welcome to spell with a friend!</h1>
+          <h2>A multiplayer version of the NYTimes Spelling Bee</h2>
           <div>
-            <BeeAnimation />
-            <h1>Welcome to spell with a friend!</h1>
-            <h2>A multiplayer version of the NYTimes Spelling Bee</h2>
-            <div>
-              <CreateNewGameButton />
-              <Link href="/join">
-                <button>Join an Active Game</button>
-              </Link>
-            </div>
-            <BeeAnimation flip />
+            <CreateNewGameButton />
+            <Link href="/join">
+              <button>Join an Active Game</button>
+            </Link>
           </div>
         </div>
+        <BeeAnimation flip />
       </div>
     </PageWrapper>
   );

@@ -27,9 +27,9 @@ const UserDetailsForm = ({
   return (
     <PageWrapper>
       <div className="userLogin">
-        <p>Enter your display name</p>
+        <p>Enter your player name</p>
         <input
-          placeholder="Display name"
+          placeholder="QueenBee96"
           type="text"
           name="displayName"
           value={displayName}

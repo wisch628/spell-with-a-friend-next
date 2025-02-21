@@ -10,9 +10,9 @@ export const BeeAnimation = ({ flip = false }) => {
         width={100}
         height={45.31}
       />
-      <svg className="trail" width="250" height="100" viewBox="0 0 250 100">
+      <svg className="trail" width="400" height="100" viewBox="0 0 400 100">
         <path
-          d="M0,50 Q25,20 50,50 T100,50 T150,50 T200,50 T250,50"
+          d="M0,50 Q50,20 100,50 T200,50 T300,50 T400,50"
           stroke="black"
           strokeWidth="2"
           fill="transparent"
@@ -21,10 +21,10 @@ export const BeeAnimation = ({ flip = false }) => {
         >
           <animate
             attributeName="stroke-dashoffset"
-            from="250"
+            from="400"
             to="0"
             dur="6s"
-            begin="1s"
+            begin="0s"
             repeatCount="indefinite"
           />
         </path>
