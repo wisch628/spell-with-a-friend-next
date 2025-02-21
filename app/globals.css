@@ -533,6 +533,7 @@ h5 {
   align-items: center;
   text-align: center;
   gap: 26px;
+  margin-top: 30px;
 }
 
 .hexagon {
@@ -592,4 +593,113 @@ h5 {
   display: flex;
   justify-content: center;
   margin: 30px auto;
+}
+
+@keyframes beeFlight {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+
+  10% {
+    transform: translateX(25px) translateY(-20px);
+  }
+
+  20% {
+    transform: translateX(50px) translateY(0);
+  }
+
+  30% {
+    transform: translateX(75px) translateY(15px);
+  }
+
+  40% {
+    transform: translateX(100px) translateY(0);
+  }
+
+  50% {
+    transform: translateX(125px) translateY(-20px);
+  }
+
+  60% {
+    transform: translateX(150px) translateY(0);
+  }
+
+  70% {
+    transform: translateX(175px) translateY(15px);
+  }
+
+  80% {
+    transform: translateX(200px) translateY(0);
+  }
+
+  90% {
+    transform: translateX(225px) translateY(-20px);
+  }
+
+  100% {
+    transform: translateX(250px) translateY(0);
+  }
+}
+
+.bee {
+  width: 50px;
+  position: absolute;
+  animation: beeFlight 6s infinite linear;
+  z-index: 2;
+}
+
+.trail {
+  margin-top: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.bee-container {
+  display: flex;
+  align-items: center;
+}
+
+.trail-mask {
+  width: 250px;
+  height: 100px;
+  margin-left: -250px;
+  background: #f7da21;
+  animation: maskAnimation 6s infinite linear;
+  z-index: 1;
+}
+
+@keyframes maskAnimation {
+  0% {
+    clip-path: inset(0 0 0 0);
+  }
+
+  100% {
+    clip-path: inset(0 0 0 100%);
+  }
+}
+
+.trail-mask-2 {
+  width: 200px;
+  height: 100px;
+  margin-left: -250px;
+  background: #f7da21;
+  animation: maskAnimation2 6s infinite linear;
+  z-index: 1;
+}
+
+.flip {
+  transform: scaleX(-1);
+}
+
+@keyframes maskAnimation2 {
+  0% {
+    clip-path: inset(0 100% 0 0);
+  }
+  25% {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  100% {
+    clip-path: inset(0 0 0 0);
+  }
 }
