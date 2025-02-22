@@ -6,9 +6,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { PageWrapper } from "../components/PageWrapper";
 import { UserDetailsBody } from "../components/types";
 import { defaultColors } from "../components/constants";
-import { CreateNewGameButton } from "../components/CreateNewGameButton";
 import UserDetailsForm from "../components/UserDetailsForm";
 import { toast } from "react-toastify";
+import { ErrorPage } from "../components/ErrorPage";
 
 const JoinGameContent = () => {
   const [gameLoaded, setGameLoaded] = useState(false);
@@ -63,12 +63,7 @@ const JoinGameContent = () => {
   };
   if (gameLoaded && availableColors.length === 0) {
     return (
-      <PageWrapper>
-        <div>
-          <p>Sorry, that game is full. Create a new one below!</p>
-          <CreateNewGameButton />
-        </div>
-      </PageWrapper>
+      <ErrorPage errorMessage="Sorry, that game is full! Create a new game below." />
     );
   }
 

@@ -14,7 +14,7 @@ export async function GET(
     await db.query("BEGIN");
 
   const games = await db.query(
-        "SELECT 1 FROM games WHERE game_code = $1",
+        "SELECT * FROM games WHERE game_code = $1",
         [gameCode]
       );
       if (games.rows.length === 0) {
@@ -29,7 +29,19 @@ export async function GET(
 
     const users = await db.query(selectGameUsers, [gameCode]);
     const words = await db.query(selectGameWords, [gameCode]);
+    const createdDate = new Date(games.rows[0].created_at as Date);
+    const today = new Date()
+    const hourDifference = (today.getTime() - createdDate.getTime()) / (1000 * 60 * 60);
+    const isOldGame = hourDifference > 24;
+      if (words.rows.length > 0 && isOldGame){
+        const messageResult = await db.query('DELETE FROM messages WHERE game_code = $1 RETURNING *;', [gameCode]);
+        const deleteResult = await db.query('DELETE FROM games WHERE game_code = $1 RETURNING *;', [gameCode])
+        console.log(`Deleted ${messageResult.rows.length} messages and ${deleteResult.rows.length} game and user rows.`)
+        await db.query('COMMIT');
 
+        return NextResponse.json({ status: 410, error: "Game is expired, please make a new one" });
+
+      }
 
     // Respond with the new game details
     return NextResponse.json(
@@ -44,7 +56,7 @@ export async function GET(
   } catch (error) {
     // Rollback in case of error
     await db.query("ROLLBACK");
-    console.error("Error creating game:", error);
+    console.error("Error getting the game:", error);
     return NextResponse.json({ status: 500, error: "Could not fetch game" });
   }
 }

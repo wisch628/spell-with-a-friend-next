@@ -74,6 +74,14 @@ const Play = () => {
     fetch(`/api/game/${gameId}`)
       .then((response) => response.json())
       .then((data) => {
+        if (data.status === 400) {
+          router.push(`/notFound`);
+          return;
+        }
+        if (data.status === 410) {
+          router.push(`/expired?gameCode=${gameId}`);
+          return;
+        }
         setFoundWords(data.words);
         setUsers(data.users);
       })
@@ -85,7 +93,7 @@ const Play = () => {
         setMessages(data.messages);
       })
       .catch((error) => console.error("Error:", error));
-  }, [gameId]);
+  }, [gameId, router]);
 
   const submitWord = useCallback(async () => {
     if (!currentWord.length) return;
@@ -157,13 +165,16 @@ const Play = () => {
 
   useEffect(() => {
     if (!users.length) return;
-    const savedName = localStorage.getItem(gameId as string);
+    const savedName = localStorage.getItem(gameId as string)?.toLowerCase();
     if (!savedName) {
       router.push(`${INVITE_FRIEND_ROUTE}${gameId}`);
     }
     const savedPlayer = users.find(
-      ({ display_name }) => display_name === savedName
+      ({ display_name }) => display_name.toLowerCase() === savedName
     ) as GameUser;
+    if (savedPlayer === undefined) {
+      router.push(`/join?gameCode=${gameId}`);
+    }
     setPlayer(savedPlayer);
   }, [users, gameId, router]);
 
