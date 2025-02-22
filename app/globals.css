@@ -209,7 +209,7 @@ nav.top button {
   column-gap: 50px;
   row-gap: 50px;
   overflow-x: hidden;
-  align-items: center;
+  align-items: baseline;
   @media screen and (max-width: 540px) {
     padding-top: 20px;
     margin-bottom: 60px;
@@ -371,16 +371,15 @@ nav.top button {
 }
 
 .loaderContainer {
-    height: 100vh;
-      background-color: #f7da21;
-      display: flex;
-      align-items: center;
+  height: 100vh;
+  background-color: #f7da21;
+  display: flex;
+  align-items: center;
 }
 
 .loader {
   margin: -100px auto 0;
-    width: 80%;
-
+  width: 80%;
 }
 
 .join_wrapper {
