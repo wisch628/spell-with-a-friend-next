@@ -371,8 +371,16 @@ nav.top button {
 }
 
 .loaderContainer {
-  margin: 20% auto;
-  max-width: 70%;
+    height: 100vh;
+      background-color: #f7da21;
+      display: flex;
+      align-items: center;
+}
+
+.loader {
+  margin: -100px auto 0;
+    width: 80%;
+
 }
 
 .join_wrapper {

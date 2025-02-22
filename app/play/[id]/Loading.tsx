@@ -1,10 +1,14 @@
+import { BeeAnimation } from "@/app/components/BeeAnimation";
 import React from "react";
 
 export const Loading = () => {
   return (
     <div className="loaderContainer">
-      <h1>Pulling Todays NYTimes Puzzle...</h1>
-      <div className="loader"></div>
+      <div className="loader">
+        <BeeAnimation />
+        <h1>Pulling Todays NYTimes Puzzle...</h1>
+        <BeeAnimation flip />
+      </div>
     </div>
   );
 };
