@@ -382,7 +382,7 @@ nav.top button {
   max-width: 300px;
   margin: 30px auto;
   font-size: x-large;
-  row-gap: 20px;;
+  row-gap: 20px;
 }
 
 .join_wrapper > p {
@@ -513,7 +513,7 @@ h5 {
   justify-content: space-around;
   width: 100%;
   gap: 10px;
-    margin-top: 10px;
+  margin-top: 10px;
   @media screen and (max-width: 500px) {
     flex-direction: column;
   }
@@ -521,7 +521,7 @@ h5 {
 
 select {
   width: 80%;
-  font-size: 22px;;
+  font-size: 22px;
   margin: auto;
 }
 
@@ -614,17 +614,15 @@ select {
     transform: translateX(0) translateY(0);
   }
 
-
   10% {
-    transform: translateX(40px) translateY(-15px);
- 
+    transform: translateX(40px) translateY(-20px);
   }
-  37% {
-    transform: translateX(148px) translateY(15px);
+  35% {
+    transform: translateX(140px) translateY(15px);
   }
 
   60% {
-    transform: translateX(240px) translateY(-15px);
+    transform: translateX(240px) translateY(-20px);
   }
 
   85% {
@@ -692,11 +690,11 @@ select {
   0% {
     clip-path: inset(0 100% 0 0);
   }
-  5% {
+  15% {
     clip-path: inset(0 100% 0 0);
   }
 
   100% {
-    clip-path: inset(0 5% 0 0);
+    clip-path: inset(0 15% 0 0);
   }
 }

@@ -2,8 +2,9 @@
 
 import { useSearchParams } from "next/navigation";
 import { ErrorPage } from "../components/ErrorPage";
+import { Suspense } from "react";
 
-const ExpiredGame = () => {
+const ExpiredGameContent = () => {
   const searchParams = useSearchParams();
   const gameCodeFromParams = searchParams.get("gameCode") || "";
   return (
@@ -12,6 +13,14 @@ const ExpiredGame = () => {
         gameCodeFromParams + " " || ""
       }has expired. You can create a new game below!`}
     />
+  );
+};
+
+const ExpiredGame = () => {
+  return (
+    <Suspense>
+      <ExpiredGameContent />
+    </Suspense>
   );
 };
 
