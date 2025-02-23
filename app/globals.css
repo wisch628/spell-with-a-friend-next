@@ -175,6 +175,10 @@ nav.top button {
   min-width: 90px;
 }
 
+.thin_border_button:hover {
+  background-color: #f0f0f0;
+}
+
 .close {
   border: none;
 }
@@ -303,7 +307,7 @@ nav.top button {
   overflow-wrap: break-word;
 }
 
-#new-message-form {
+.new-message-form {
   width: 400px;
   font-size: 16px;
   border-top: 0.5px solid black;
@@ -573,6 +577,10 @@ select {
   cursor: pointer;
 }
 
+.hexagon:active {
+  scale: 90%;
+}
+
 .center {
   background-color: #f7da21;
   top: 90px;
@@ -704,4 +712,8 @@ select {
   100% {
     clip-path: inset(0 15% 0 0);
   }
+}
+
+.sad {
+  margin-top: 40px;
 }

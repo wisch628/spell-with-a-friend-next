@@ -1,4 +1,10 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { GameUser } from "../types";
 import { callPostRoute } from "../utils";
 import { useParams } from "next/navigation";
@@ -21,6 +27,31 @@ export const ChatBox = ({
   const params = useParams();
   const gameId = params.id as string;
   const messageRef = useRef<HTMLInputElement | null>(null);
+  const [currentMessage, setCurrentMessage] = useState("");
+  const sendMessage = useCallback(
+    async (event?: React.FormEvent) => {
+      event?.preventDefault();
+      await callPostRoute(`/api/messages/${gameId}`, {
+        color: currentPlayer?.color,
+        content: currentMessage,
+      });
+      setCurrentMessage("");
+    },
+    [currentMessage, currentPlayer?.color, gameId]
+  );
+  useEffect(() => {
+    const handleEnter = (event: KeyboardEvent) => {
+      if (event.key === "Enter" && !!currentMessage?.length) {
+        sendMessage();
+      }
+    };
+
+    document.addEventListener("keydown", handleEnter);
+
+    return () => {
+      document.removeEventListener("keydown", handleEnter);
+    };
+  }, [currentMessage, sendMessage]);
 
   useEffect(() => {
     if (messageRef.current) {
@@ -31,16 +62,6 @@ export const ChatBox = ({
     }
   }, [messages]);
 
-  const sendMessage = async (event?: React.FormEvent) => {
-    event?.preventDefault();
-    await callPostRoute(`/api/messages/${gameId}`, {
-      color: currentPlayer?.color,
-      content: currentMessage,
-    });
-    setCurrentMessage("");
-  };
-
-  const [currentMessage, setCurrentMessage] = useState("");
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const mappedUsers = useMemo(() => {
     const mapped: Record<string, string> = {};
@@ -83,11 +104,7 @@ export const ChatBox = ({
           ref={messagesEndRef}
         ></div>
       </div>
-      <form
-        id="new-message-form"
-        className="new-message-form"
-        onSubmit={sendMessage}
-      >
+      <div className="new-message-form">
         <input
           ref={messageRef}
           type="text"
@@ -97,12 +114,14 @@ export const ChatBox = ({
           onChange={(e) => setCurrentMessage(e.target.value)}
           className="chatbox-input"
         />
-        <span className="input-group-btn">
-          <button id="chatButton" className="thin_border_button" type="submit">
-            Send
-          </button>
-        </span>
-      </form>
+        <button
+          id="chatButton"
+          className="thin_border_button"
+          onClick={sendMessage}
+        >
+          Send
+        </button>
+      </div>
     </div>
   );
 };

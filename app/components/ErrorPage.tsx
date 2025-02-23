@@ -11,6 +11,7 @@ export const ErrorPage = ({ errorMessage }: { errorMessage: string }) => {
           alt="sad bee"
           width={100}
           height={100}
+          className="sad"
         />
         <p>{errorMessage}</p>
         <CreateNewGameButton />

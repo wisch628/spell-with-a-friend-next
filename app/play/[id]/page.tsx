@@ -31,7 +31,6 @@ const Play = () => {
   const params = useParams();
   const router = useRouter();
   const teamPopupRef = useRef<HTMLInputElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
 
   const gameId = params.id as string;
 
@@ -131,7 +130,6 @@ const Play = () => {
     const handleTyping = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setPopup("");
-        inputRef?.current?.focus();
         return;
       }
       if (popup !== "") return;
@@ -210,7 +208,6 @@ const Play = () => {
 
   const resetFocus = () => {
     if (popup == "") {
-      inputRef?.current?.focus();
     }
   };
 
