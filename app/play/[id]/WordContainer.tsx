@@ -11,9 +11,13 @@ export const WordContainer = ({
 }: {
   correctWords: WordObject[];
 }) => {
+  const singleWord = correctWords?.length === 1;
   return (
     <div className="word-wrapper">
-      <p>Your team has found {correctWords?.length || 0} words</p>
+      <p>
+        Your team has found {correctWords?.length || 0}{" "}
+        {singleWord ? "word" : "words"}
+      </p>
       <div className="word-container">
         {correctWords.length > 0
           ? correctWords.map((wordObject) => {
