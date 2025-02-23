@@ -142,6 +142,7 @@ button {
   cursor: pointer;
 }
 
+
 .notification {
   border: 2px solid red !important;
 }
@@ -175,8 +176,8 @@ nav.top button {
   min-width: 90px;
 }
 
-.thin_border_button:hover {
-  background-color: #f0f0f0;
+button:hover {
+  scale: 102%;
 }
 
 .close {
@@ -575,6 +576,8 @@ select {
   color: black;
   position: absolute;
   cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: none;
 }
 
 .hexagon:active {
