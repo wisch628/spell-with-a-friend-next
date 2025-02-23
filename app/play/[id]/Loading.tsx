@@ -6,7 +6,7 @@ export const Loading = () => {
     <div className="loaderContainer">
       <div className="loader">
         <BeeAnimation />
-        <h1>Pulling Todays NYTimes Puzzle...</h1>
+        <h1>{`Pulling Today's NYTimes Puzzle...`}</h1>
         <BeeAnimation flip />
       </div>
     </div>
