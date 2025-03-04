@@ -13,6 +13,7 @@ export const BottomNav = ({
         className={notifications > 0 ? "notification" : ""}
         onClick={() => togglePopUp("chat")}
         data-count={notifications}
+        onKeyDown={(event) => event.preventDefault()}
       >
         Chat Box
       </button>
